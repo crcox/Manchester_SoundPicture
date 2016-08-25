@@ -1,7 +1,7 @@
 require 'rake'
 require 'rake/clean'
 require 'tmpdir'
-require './methods'
+require File.join(ENV['HOME'],'src','Manchester_SoundPicture','rake','methods')
 
 HOME = ENV['HOME']
 XYZ_ORIENT = ENV.fetch('XYZ_ORIENT') {'RAI'} # order of xyz coordinates in txt files.
@@ -23,6 +23,7 @@ dir_list = []
     dir_list.push(File.join(d,m,'cv'))
   end
 end
+task :makedirs => dir_list
 
 # INDEXES
 PERMUTATION_INDEX = ('001'..'100').to_a
@@ -395,7 +396,6 @@ txt_orig_o =
   SUBJECTS_L2NORM_ORIG_O_TXT_CV +
   SUBJECTS_SELECTIONCOUNT_ORIG_O_TXT_CV +
   SUBJECTS_STABILITY_ORIG_O_TXT_CV
-
 afni_orig_o_raw.zip(txt_orig_o).each do |afni_lol,txt_lol|
   afni_lol.zip(txt_lol).each do |afni_list,txt_list|
     afni_list.zip(txt_list,MASK_ORIG_O).each do |target,source,anat|

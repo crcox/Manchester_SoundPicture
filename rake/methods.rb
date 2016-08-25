@@ -17,7 +17,7 @@ def drive_afni_suma_record_figures(dirname,prefix)
 end
 
 def compose_montage_figure(dirname,prefix)
-  sh("compose_montage_figure.sh #{dirname} #{prefix}")
+  sh("/home/chris/src/Manchester_SoundPicture/rake/compose_montage_figure.sh #{dirname} #{prefix}")
   sh("mogrify -format png #{prefix}.ppm")
 end
 
@@ -36,6 +36,43 @@ def png_ttest(target, source)
     threshold="0.05 *p"
   elsif target.include? "p01" then
     threshold="0.01 *p"
+  end
+  sign = '+'
+  configure_afni_figure(funcfile,scalemax,threshold,sign)
+
+  Dir.mktmpdir do |tmpdir|
+    drive_afni_suma_record_figures(tmpdir, prefix)
+    compose_montage_figure(tmpdir, prefix)
+  end
+
+  if (!(spath.eql? '.')) then
+    rm_f(funcfile)
+    rm_f(funcfile.sub(".HEAD",".BRIK"))
+    rm_f(funcfile.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+def png_binomrank(target, source)
+  spath = File.dirname(source).to_s
+  prefix = target.sub('.png','')
+
+  funcfile = File.basename(source)
+
+  if (!(spath.eql? '.')) then
+    sh("3dcopy #{source} #{funcfile}")
+  end
+
+  scalemax = 0  # autorange
+  if target.include? "p05" then
+    threshold="0.05 *p"
+  elsif target.include? "p01" then
+    threshold="0.01 *p"
+  elsif target.include? "p001" then
+    threshold="0.001 *p"
+  elsif target.include? "p0001" then
+    threshold="0.0001 *p"
+  elsif target.include? "p00001" then
+    threshold="0.00001 *p"
   end
   sign = '+'
   configure_afni_figure(funcfile,scalemax,threshold,sign)
@@ -187,7 +224,7 @@ def afni_blur(target, source, blur)
   sh("3dmerge -1blur_fwhm #{blur} -prefix #{target_prefix} #{source}")
 end
 
-def binomrank_test(target, source_list, perm_lol, blur=0, prob=0.5)
+def binomrank_test(target, source_list, perm_lol, mask, blur=0, prob=0.5)
   # source_list will contain a file for each subject.
   # perm_lol will contain a list of each permutation, each containing a list of
   # files for each subject.
@@ -195,11 +232,17 @@ def binomrank_test(target, source_list, perm_lol, blur=0, prob=0.5)
   # and permutation files are generated and the rank is computed wrt those
   # blurred datasets. These blurred datasets are deleted after use.
   target_prefix, target_ext = target.split('+')
-  nsubj = source_list.size
-  p perm_lol
+  #nsubj = source_list.size
+  nperm = perm_lol.size
   Dir.mktmpdir do |dir|
     pcount_full_list = (1..perm_lol.size).collect {|i| File.join(dir,["pcount_#{i}",target_ext].join('+'))}
     pcount_prefix_list = (1..perm_lol.size).collect {|i| File.join(dir,"pcount_#{i}")}
+    thresh_full = File.join(dir,['thresh',target_ext].join('+'))
+    thresh_prefix = File.join(dir,'thresh')
+    mean_full = File.join(dir,['mean',target_ext].join('+'))
+    mean_prefix = File.join(dir,'mean')
+    mean_masked_full = File.join(dir,['mean_masked',target_ext].join('+'))
+    mean_masked_prefix = File.join(dir,'mean_masked')
     count_full = File.join(dir,["count",target_ext].join('+'))
     count_prefix = File.join(dir,"count")
     bucket_full = File.join(dir,["bucket",target_ext].join('+'))
@@ -227,8 +270,10 @@ def binomrank_test(target, source_list, perm_lol, blur=0, prob=0.5)
 
     if blur > 0
       sh("3dmerge -1blur_fwhm #{blur} -gcount -prefix #{count_prefix} #{source_list.join(' ')}")
+      sh("3dmerge -1blur_fwhm #{blur} -gmean -prefix #{mean_prefix} #{source_list.join(' ')}")
     else
       sh("3dmerge -gcount -prefix #{count_prefix} #{source_list.join(' ')}")
+      sh("3dmerge -gmean -prefix #{mean_prefix} #{source_list.join(' ')}")
     end
 
     # Combine permutation voxel selection datasets into a single dataset
@@ -243,15 +288,15 @@ def binomrank_test(target, source_list, perm_lol, blur=0, prob=0.5)
     sh("3dTstat -nzcount -prefix #{eqcount_prefix} #{eqreal_full}")
     # Compute the rank (number of values less than the real value + half the
     # number of ties with the real value)
-    sh("3dcalc -prefix #{target_prefix} -a #{ltcount_full} -b #{eqcount_full} -expr 'a+(b/2)'")
+    sh("3dcalc -prefix #{thresh_prefix} -a #{ltcount_full} -b #{eqcount_full} -c #{mask} -expr '(a+(b/2))*step(c)'")
+    sh("3dcalc -prefix #{mean_masked_prefix} -a #{mean_full} -b #{mask} -expr 'a*step(b)'")
+    sh("3dbucket -fbuc -prefix #{target_prefix} #{mean_masked_full} #{thresh_full}")
     # Compute binomial p-value
 #    sh("3dcalc -t #{rank_full} -expr 'fibn_t2p(t,#{nsubj},#{prob})' -prefix #{binom_pval_prefix}")
 #    # Concatenate the rank and the p-value.
 #    sh("3dbucket -fbuc -prefix #{target_prefix} #{rank_full} #{binom_pval_full}")
-    # Mark the dataset as intensity+threshold
-    sh("3drefit -fim #{target}")
     # Compute binomial p-value
-    sh("3drefit -substatpar 0 fibn #{nsubj} #{prob} #{target}")
+    sh("3drefit -fibn -statpar #{nperm} #{prob} #{target}")
     # Add FDR curves
     sh("3drefit -addFDR #{target}")
   end
