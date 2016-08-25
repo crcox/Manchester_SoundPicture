@@ -10,7 +10,7 @@ CMD_CRON="/home/chris/src/Manchester_SoundPicture/cron/rsync_visvis_tune.sh"
 
 ${SSH} \
   -i "${ID}" \
-  "${USER}@${REMOTE} ${CMD_REMOTE}"
+  "${USER}@${REMOTE}" "${CMD_REMOTE}"
 
 ${FLOCK} \
   -nx "${LOCKFILE}" \
