@@ -1,7 +1,7 @@
 #!/bin/bash
 FLOCK='/usr/bin/flock'
 LOCKFILE="/home/chris/$(basename "$0").lock"
-CMD_CRON="/home/chris/src/Manchester_SoundPicture/cron/rsync_semvis_tune.sh"
+CMD_CRON="/home/chris/src/Manchester_SoundPicture/cron/rsync_roi.sh"
 
 ${FLOCK} \
   -nx "${LOCKFILE}" \
