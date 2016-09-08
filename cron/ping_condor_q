@@ -1,0 +1,7 @@
+#!/bin/bash
+SSH='/usr/bin/ssh'
+ID='/home/chris/.ssh/id_rsa_cron'
+USER='crcox'
+REMOTE='chtc'
+
+${SSH} -i "${ID}" "${USER}@${REMOTE}" "condor_q ${USER}"

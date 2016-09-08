@@ -1,0 +1,12 @@
+#!/bin/bash
+FLOCK='/usr/bin/flock'
+SSH='/usr/bin/ssh'
+ID='/home/chris/.ssh/id_rsa_cron'
+USER='crcox'
+REMOTE='chtc'
+LOCKFILE="/home/chris/$(basename "$0").lock"
+CMD_CRON="/home/chris/src/Manchester_SoundPicture/cron/rsync_visvis_.sh"
+
+${FLOCK} \
+  -nx "${LOCKFILE}" \
+  -c "${CMD_CRON}"
