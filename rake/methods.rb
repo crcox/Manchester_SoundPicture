@@ -317,7 +317,7 @@ def nonparametric_rank_against_permutation_distribution(target, source, perm_lis
     gtcount_full = [gtcount_prefix,target_ext].join('+')
     gtperm_list = []
 
-    if (blur) then
+    if blur > 0 then
       bsource_prefix = File.join(dir,['b',source_prefix_b].join('_'))
       bsource_full = [bsource_prefix,source_ext].join('+')
       sh("3dmerge -1blur_fwhm #{blur} -prefix #{bsource_prefix} #{source}")
@@ -337,11 +337,11 @@ def nonparametric_rank_against_permutation_distribution(target, source, perm_lis
         sh("3dcalc -a #{source} -b #{permutation} -expr 'step(a-b)' -prefix #{gtperm_prefix}")
       end
 
-      gtperm_list.push(gtperm_full.join('+'))
+      gtperm_list.push(gtperm_full)
     end
     sh("3dmerge -gcount -prefix #{nzcount_prefix} #{perm_list.join(' ')}")
     sh("3dmerge -gcount -prefix #{gtcount_prefix} #{gtperm_list.join(' ')}")
-    expression = "'ifelse(and(iszero(d),c),(100-b)/2,ifelse(and(ispositive(d),c),a,50))'"
+    expression = "'ifelse(iszero(d),((step(b)*100)-b)/2,ifelse(ispositive(d),a,step(a+b)*50))'"
     sh("3dcalc -a #{gtcount_full} -b #{nzcount_full} -c #{mask} -d #{source} -prefix #{target_prefix} -expr #{expression}")
   end
 end
@@ -352,20 +352,20 @@ def nonparametric_count_median_thresholded_ranks(target,rank_list,intensitymap='
   # thresholding at each voxel. These counts are intended to be used as a
   # threshold. If you provide an intensity map, the count threshold will be
   # combined with it to create a new intensity+threshold dataset.
-    target_prefix, target_ext = target.split('+')
-    target_prefix_b  = File.basename(target_prefix)
-    medianrank = rank_list.size / 2
-    Dir.mktmpdir do |dir|
-      rankcount_prefix = File.join(dir,['rankcount',target_prefix_b].join('_'))
-      rankcount_full = [rankcount_prefix,target_ext].join('+')
-      sh("3dmerge -1clip #{medianrank + 0.01} -gcount -prefix #{rankcount_prefix} #{rank_list.join(' ')}")
-      if (intenstitymap) then
-        sh("3dbucket -fbuc -prefix #{target_prefix} #{intensitymap} #{rankcount_full}")
-        sh("3drefit -fith #{target}")
-      else
-        sh("3dbucket -fbuc -prefix #{target_prefix} #{rankcount_full}")
-      end
+  target_prefix, target_ext = target.split('+')
+  target_prefix_b  = File.basename(target_prefix)
+  medianrank = rank_list.size / 2
+  Dir.mktmpdir do |dir|
+    rankcount_prefix = File.join(dir,['rankcount',target_prefix_b].join('_'))
+    rankcount_full = [rankcount_prefix,target_ext].join('+')
+    sh("3dmerge -1clip #{medianrank + 0.01} -gcount -prefix #{rankcount_prefix} #{rank_list.join(' ')}")
+    if (intensitymap) then
+      sh("3dbucket -fbuc -prefix #{target_prefix} #{intensitymap} #{rankcount_full}")
+      sh("3drefit -fith #{target}")
+    else
+      sh("3dbucket -fbuc -prefix #{target_prefix} #{rankcount_full}")
     end
+  end
 end
 
 def parametric_zscore(target, source, mean, sd)

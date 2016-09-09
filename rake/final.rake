@@ -8,7 +8,7 @@ XYZ_ORIENT = ENV.fetch('XYZ_ORIENT') {'RAI'} # order of xyz coordinates in txt f
 VOXDIM = ENV.fetch('VOXDIM') {3} # when applying a warp, this defines the voxelsize (in mm) for the warped data
 BLURFWHM = ENV['BLURFWHM'].to_i
 DATADIR = "#{HOME}/MRI/Manchester/data/raw"
-PERMDIR = "../../permtest/solutionmaps"
+PERMDIR = ENV.fetch('PERMDIR') {'../../permtest/solutionmaps'}
 SHARED_ATLAS = "#{HOME}/MRI/Manchester/data/CommonBrains/MNI_EPI_funcRes.nii"
 SHARED_ATLAS_TLRC = "#{HOME}/MRI/Manchester/data/CommonBrains/TT_N27_funcres.nii"
 SPEC_BOTH = "#{HOME}/suma_TT_N27/TT_N27_both.spec"
@@ -18,9 +18,10 @@ SURFACE_VOLUME = "./TT_N27_SurfVol.nii"
 PERMUTATION_INDEX = ('001'..'100').to_a
 SUBJECT_INDEX = ('01'..'23').to_a
 CROSSVALIDATION_INDEX = ('01'..'09').to_a
+#CVSUBSET = ENV.fetch('CVSUBSET').split {CROSSVALIDATION_INDEX}
 
 dir_list = []
-%w(afni zscore rank).each do |d|
+%w(afni zscore rank ranki).each do |d|
   %w(l2norm nodestrength selectioncount stability).each do |m|
     directory File.join(d,m)
     directory File.join(d,m,'cv')
@@ -173,6 +174,36 @@ RANK_SELECTIONCOUNT_ORIG_C_CV = AFNI_SELECTIONCOUNT_ORIG_C_CV.map {|s| s.pathmap
 RANK_SELECTIONCOUNT_TLRC_C_CV = AFNI_SELECTIONCOUNT_TLRC_C_CV.map {|s| s.pathmap("rank/selectioncount/cv/%f")}
 RANK_SELECTIONCOUNT_TLRC_C_BLUR_CV = TXT_SELECTIONCOUNT_ORIG_O_CV.map {|s| s.pathmap("rank/selectioncount/cv/%n.b#{BLURFWHM}_C+tlrc.HEAD")}
 
+RANKI_NODESTRENGTH_ORIG_O = AFNI_NODESTRENGTH_ORIG_O.pathmap("ranki/nodestrength/%f")
+RANKI_NODESTRENGTH_ORIG_C = AFNI_NODESTRENGTH_ORIG_C.pathmap("ranki/nodestrength/%f")
+RANKI_NODESTRENGTH_TLRC_C = AFNI_NODESTRENGTH_TLRC_C.pathmap("ranki/nodestrength/%f")
+RANKI_NODESTRENGTH_TLRC_C_BLUR = TXT_NODESTRENGTH_ORIG_O.pathmap("ranki/nodestrength/%n.b#{BLURFWHM}_C+tlrc.HEAD")
+RANKI_L2NORM_ORIG_O = AFNI_L2NORM_ORIG_O.pathmap("ranki/l2norm/%f")
+RANKI_L2NORM_ORIG_C = AFNI_L2NORM_ORIG_C.pathmap("ranki/l2norm/%f")
+RANKI_L2NORM_TLRC_C = AFNI_L2NORM_TLRC_C.pathmap("ranki/l2norm/%f")
+RANKI_L2NORM_TLRC_C_BLUR = TXT_L2NORM_ORIG_O.pathmap("ranki/l2norm/%n.b#{BLURFWHM}_C+tlrc.HEAD")
+RANKI_SELECTIONCOUNT_ORIG_O = AFNI_SELECTIONCOUNT_ORIG_O.pathmap("ranki/selectioncount/%f")
+RANKI_SELECTIONCOUNT_ORIG_C = AFNI_SELECTIONCOUNT_ORIG_C.pathmap("ranki/selectioncount/%f")
+RANKI_SELECTIONCOUNT_TLRC_C = AFNI_SELECTIONCOUNT_TLRC_C.pathmap("ranki/selectioncount/%f")
+RANKI_SELECTIONCOUNT_TLRC_C_BLUR = TXT_SELECTIONCOUNT_ORIG_O.pathmap("ranki/selectioncount/%n.b#{BLURFWHM}_C+tlrc.HEAD")
+RANKI_STABILITY_ORIG_O = AFNI_STABILITY_ORIG_O.pathmap("ranki/stability/%f")
+RANKI_STABILITY_ORIG_C = AFNI_STABILITY_ORIG_C.pathmap("ranki/stability/%f")
+RANKI_STABILITY_TLRC_C = AFNI_STABILITY_TLRC_C.pathmap("ranki/stability/%f")
+RANKI_STABILITY_TLRC_C_BLUR = TXT_STABILITY_ORIG_O.pathmap("ranki/stability/%n.b#{BLURFWHM}_C+tlrc.HEAD")
+
+RANKI_NODESTRENGTH_ORIG_O_CV = AFNI_NODESTRENGTH_ORIG_O_CV.map {|s| s.pathmap("ranki/nodestrength/cv/%f")}
+RANKI_NODESTRENGTH_ORIG_C_CV = AFNI_NODESTRENGTH_ORIG_C_CV.map {|s| s.pathmap("ranki/nodestrength/cv/%f")}
+RANKI_NODESTRENGTH_TLRC_C_CV = AFNI_NODESTRENGTH_TLRC_C_CV.map {|s| s.pathmap("ranki/nodestrength/cv/%f")}
+RANKI_NODESTRENGTH_TLRC_C_BLUR_CV = TXT_NODESTRENGTH_ORIG_O_CV.map {|s| s.pathmap("ranki/nodestrength/cv/%n.b#{BLURFWHM}_C+tlrc.HEAD")}
+RANKI_L2NORM_ORIG_O_CV = AFNI_L2NORM_ORIG_O_CV.map {|s| s.pathmap("ranki/l2norm/cv/%f")}
+RANKI_L2NORM_ORIG_C_CV = AFNI_L2NORM_ORIG_C_CV.map {|s| s.pathmap("ranki/l2norm/cv/%f")}
+RANKI_L2NORM_TLRC_C_CV = AFNI_L2NORM_TLRC_C_CV.map {|s| s.pathmap("ranki/l2norm/cv/%f")}
+RANKI_L2NORM_TLRC_C_BLUR_CV = TXT_L2NORM_ORIG_O_CV.map {|s| s.pathmap("ranki/l2norm/cv/%n.b#{BLURFWHM}_C+tlrc.HEAD")}
+RANKI_SELECTIONCOUNT_ORIG_O_CV = AFNI_SELECTIONCOUNT_ORIG_O_CV.map {|s| s.pathmap("ranki/selectioncount/cv/%f")}
+RANKI_SELECTIONCOUNT_ORIG_C_CV = AFNI_SELECTIONCOUNT_ORIG_C_CV.map {|s| s.pathmap("ranki/selectioncount/cv/%f")}
+RANKI_SELECTIONCOUNT_TLRC_C_CV = AFNI_SELECTIONCOUNT_TLRC_C_CV.map {|s| s.pathmap("ranki/selectioncount/cv/%f")}
+RANKI_SELECTIONCOUNT_TLRC_C_BLUR_CV = TXT_SELECTIONCOUNT_ORIG_O_CV.map {|s| s.pathmap("ranki/selectioncount/cv/%n.b#{BLURFWHM}_C+tlrc.HEAD")}
+
 ZSCORE_NODESTRENGTH_ORIG_O = TXT_NODESTRENGTH_ORIG_O.pathmap("zscore/nodestrength/%n_O+orig.HEAD")
 ZSCORE_NODESTRENGTH_ORIG_C = TXT_NODESTRENGTH_ORIG_O.pathmap("zscore/nodestrength/%n_C+orig.HEAD")
 ZSCORE_NODESTRENGTH_TLRC_C = TXT_NODESTRENGTH_ORIG_O.pathmap("zscore/nodestrength/%n_C+tlrc.HEAD")
@@ -234,6 +265,22 @@ NONPARAMETRIC_L2NORM_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collec
 NONPARAMETRIC_L2NORM_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametric_l2norm_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
 NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametric_selectioncount_#{i}_C+tlrc.HEAD"})
 NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametric_selectioncount_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+
+NONPARAMETRICI_NODESTRENGTH_TLRC_C = "nonparametrici_nodestrength_C+tlrc.HEAD"
+NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR = "nonparametrici_nodestrength.b#{BLURFWHM}_C+tlrc.HEAD"
+NONPARAMETRICI_L2NORM_TLRC_C = "nonparametrici_l2norm_C+tlrc.HEAD"
+NONPARAMETRICI_L2NORM_TLRC_C_BLUR = "nonparametrici_l2norm.b#{BLURFWHM}_C+tlrc.HEAD"
+NONPARAMETRICI_SELECTIONCOUNT_TLRC_C = "nonparametrici_selectioncount_C+tlrc.HEAD"
+NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR = "nonparametrici_selectioncount.b#{BLURFWHM}_C+tlrc.HEAD"
+NONPARAMETRICI_STABILITY_TLRC_C = "nonparametrici_stability_C+tlrc.HEAD"
+NONPARAMETRICI_STABILITY_TLRC_C_BLUR = "nonparametrici_stability.b#{BLURFWHM}_C+tlrc.HEAD"
+
+NONPARAMETRICI_NODESTRENGTH_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_nodestrength_#{i}_C+tlrc.HEAD"})
+NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_nodestrength_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+NONPARAMETRICI_L2NORM_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_l2norm_#{i}_C+tlrc.HEAD"})
+NONPARAMETRICI_L2NORM_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_l2norm_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_selectioncount_#{i}_C+tlrc.HEAD"})
+NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_selectioncount_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
 
 BINOMRANK_NODESTRENGTH_TLRC_C = "binomrank_nodestrength_C+tlrc.HEAD"
 BINOMRANK_NODESTRENGTH_TLRC_C_BLUR = "binomrank_nodestrength.b#{BLURFWHM}_C+tlrc.HEAD"
@@ -308,12 +355,12 @@ PERMUTATIONS_SELECTIONCOUNT_TLRC_C = Rake::FileList["#{PERMDIR}/afni/selectionco
 PERMUTATIONS_STABILITY_ORIG_O = Rake::FileList["#{PERMDIR}/afni/stability/???_??_O+orig.HEAD"]
 PERMUTATIONS_STABILITY_TLRC_C = Rake::FileList["#{PERMDIR}/afni/stability/???_??_C+tlrc.HEAD"]
 
-PERMUTATIONS_NODESTRENGTH_ORIG_O_CV = CROSSVALIDATION_INDEX.collect{|c| Rake::FileList["#{PERMDIR}/afni/nodestrength/cv/???_??_#{c}_O+orig.HEAD"]}
-PERMUTATIONS_NODESTRENGTH_TLRC_C_CV = CROSSVALIDATION_INDEX.collect{|c| Rake::FileList["#{PERMDIR}/afni/nodestrength/cv/???_??_#{c}_C+tlrc.HEAD"]}
-PERMUTATIONS_L2NORM_ORIG_O_CV = CROSSVALIDATION_INDEX.collect{|c| Rake::FileList["#{PERMDIR}/afni/l2norm/cv/???_??_#{c}_O+orig.HEAD"]}
-PERMUTATIONS_L2NORM_TLRC_C_CV = CROSSVALIDATION_INDEX.collect{|c| Rake::FileList["#{PERMDIR}/afni/l2norm/cv/???_??_#{c}_C+tlrc.HEAD"]}
-PERMUTATIONS_SELECTIONCOUNT_ORIG_O_CV = CROSSVALIDATION_INDEX.collect{|c| Rake::FileList["#{PERMDIR}/afni/selectioncount/cv/???_??_#{c}_O+orig.HEAD"]}
-PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV = CROSSVALIDATION_INDEX.collect{|c| Rake::FileList["#{PERMDIR}/afni/selectioncount/cv/???_??_#{c}_C+tlrc.HEAD"]}
+PERMUTATIONS_NODESTRENGTH_ORIG_O_CV = CROSSVALIDATION_INDEX.collect{|c| PERMUTATION_INDEX.product(SUBJECT_INDEX).collect {|p,s| "#{PERMDIR}/afni/nodestrength/cv/#{p}_#{s}_#{c}_O+orig.HEAD"}}
+PERMUTATIONS_NODESTRENGTH_TLRC_C_CV = CROSSVALIDATION_INDEX.collect{|c| PERMUTATION_INDEX.product(SUBJECT_INDEX).collect {|p,s| "#{PERMDIR}/afni/nodestrength/cv/#{p}_#{s}_#{c}_C+tlrc.HEAD"}}
+PERMUTATIONS_L2NORM_ORIG_O_CV = CROSSVALIDATION_INDEX.collect{|c| PERMUTATION_INDEX.product(SUBJECT_INDEX).collect {|p,s| "#{PERMDIR}/afni/l2norm/cv/#{p}_#{s}_#{c}_O+orig.HEAD"}}
+PERMUTATIONS_L2NORM_TLRC_C_CV = CROSSVALIDATION_INDEX.collect{|c| PERMUTATION_INDEX.product(SUBJECT_INDEX).collect {|p,s| "#{PERMDIR}/afni/l2norm/cv/#{p}_#{s}_#{c}_C+tlrc.HEAD"}}
+PERMUTATIONS_SELECTIONCOUNT_ORIG_O_CV = CROSSVALIDATION_INDEX.collect{|c| PERMUTATION_INDEX.product(SUBJECT_INDEX).collect {|p,s| "#{PERMDIR}/afni/selectioncount/cv/#{p}_#{s}_#{c}_O+orig.HEAD"}}
+PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV = CROSSVALIDATION_INDEX.collect{|c| PERMUTATION_INDEX.product(SUBJECT_INDEX).collect {|p,s| "#{PERMDIR}/afni/selectioncount/cv/#{p}_#{s}_#{c}_C+tlrc.HEAD"}}
 
 PERMMEAN_NODESTRENGTH_ORIG_O = AFNI_NODESTRENGTH_ORIG_O.pathmap("#{PERMDIR}/mean/nodestrength/%f")
 PERMMEAN_NODESTRENGTH_TLRC_C = AFNI_NODESTRENGTH_TLRC_C.pathmap("#{PERMDIR}/mean/nodestrength/%f")
@@ -373,7 +420,7 @@ PERMUTATIONS_STABILITY_TLRC_C_BY_PERM = PERMUTATION_INDEX.collect {|p| PERMUTATI
 
 # GROUP PERMUTATION FILES CROSSVALIDATION X SUBJECT X PERMUTATION
 # ---------------------------------------------------------------
-PERMUTATIONS_NODESTRENGTH_ORIG_O_CV_BY_SUBJ = PERMUTATIONS_NODESTRENGTH_ORIG_O_CV.collect {|c| SUBJECT_INDEX.collect {|s|  c.grep(/[0-9]+_#{s}_[0-9]+/)}}
+PERMUTATIONS_NODESTRENGTH_ORIG_O_CV_BY_SUBJ = PERMUTATIONS_NODESTRENGTH_ORIG_O_CV.collect {|c| SUBJECT_INDEX.collect {|s| c.grep(/[0-9]+_#{s}_[0-9]+/)}}
 PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_SUBJ = PERMUTATIONS_NODESTRENGTH_TLRC_C_CV.collect {|c| SUBJECT_INDEX.collect {|s| c.grep(/[0-9]+_#{s}_[0-9]+/)}}
 PERMUTATIONS_L2NORM_ORIG_O_CV_BY_SUBJ = PERMUTATIONS_L2NORM_ORIG_O_CV.collect {|c| SUBJECT_INDEX.collect {|s| c.grep(/[0-9]+_#{s}_[0-9]+/)}}
 PERMUTATIONS_L2NORM_TLRC_C_CV_BY_SUBJ = PERMUTATIONS_L2NORM_TLRC_C_CV.collect {|c| SUBJECT_INDEX.collect {|s| c.grep(/[0-9]+_#{s}_[0-9]+/)}}
@@ -455,6 +502,66 @@ PNG_TTEST_SELECTIONCOUNT_TLRC_C_BLUR_CV = [
 
 # NON PARAMETRIC
 # --------------
+PNG_NONPARAMETRICI_NODESTRENGTH_TLRC_C = [
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C.sub('+tlrc.HEAD','_p05.png'),
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C.sub('+tlrc.HEAD','_p01.png'),
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C.sub('+tlrc.HEAD','_p001.png')]
+PNG_NONPARAMETRICI_L2NORM_TLRC_C = [
+  NONPARAMETRICI_L2NORM_TLRC_C.sub('+tlrc.HEAD','_p05.png'),
+  NONPARAMETRICI_L2NORM_TLRC_C.sub('+tlrc.HEAD','_p01.png'),
+  NONPARAMETRICI_L2NORM_TLRC_C.sub('+tlrc.HEAD','_p001.png')]
+PNG_NONPARAMETRICI_SELECTIONCOUNT_TLRC_C = [
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C.sub('+tlrc.HEAD','_p05.png'),
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C.sub('+tlrc.HEAD','_p01.png'),
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C.sub('+tlrc.HEAD','_p001.png')]
+PNG_NONPARAMETRICI_STABILITY_TLRC_C = [
+  NONPARAMETRICI_STABILITY_TLRC_C.sub('+tlrc.HEAD','_p05.png'),
+  NONPARAMETRICI_STABILITY_TLRC_C.sub('+tlrc.HEAD','_p01.png'),
+  NONPARAMETRICI_STABILITY_TLRC_C.sub('+tlrc.HEAD','_p001.png')]
+
+PNG_NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR = [
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR.sub('+tlrc.HEAD','_p05.png'),
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR.sub('+tlrc.HEAD','_p01.png'),
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR.sub('+tlrc.HEAD','_p001.png')]
+PNG_NONPARAMETRICI_L2NORM_TLRC_C_BLUR = [
+  NONPARAMETRICI_L2NORM_TLRC_C_BLUR.sub('+tlrc.HEAD','_p05.png'),
+  NONPARAMETRICI_L2NORM_TLRC_C_BLUR.sub('+tlrc.HEAD','_p01.png'),
+  NONPARAMETRICI_L2NORM_TLRC_C_BLUR.sub('+tlrc.HEAD','_p001.png')]
+PNG_NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR = [
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR.sub('+tlrc.HEAD','_p05.png'),
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR.sub('+tlrc.HEAD','_p01.png'),
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR.sub('+tlrc.HEAD','_p001.png')]
+PNG_NONPARAMETRICI_STABILITY_TLRC_C_BLUR = [
+  NONPARAMETRICI_STABILITY_TLRC_C_BLUR.sub('+tlrc.HEAD','_p05.png'),
+  NONPARAMETRICI_STABILITY_TLRC_C_BLUR.sub('+tlrc.HEAD','_p01.png'),
+  NONPARAMETRICI_STABILITY_TLRC_C_BLUR.sub('+tlrc.HEAD','_p001.png')]
+
+PNG_NONPARAMETRICI_NODESTRENGTH_TLRC_C_CV = [
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_CV.collect {|x| x.sub('+tlrc.HEAD','_p05.png')},
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_CV.collect {|x| x.sub('+tlrc.HEAD','_p01.png')},
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_CV.collect {|x| x.sub('+tlrc.HEAD','_p001.png')}]
+PNG_NONPARAMETRICI_L2NORM_TLRC_C_CV = [
+  NONPARAMETRICI_L2NORM_TLRC_C_CV.collect {|x| x.sub('+tlrc.HEAD','_p05.png')},
+  NONPARAMETRICI_L2NORM_TLRC_C_CV.collect {|x| x.sub('+tlrc.HEAD','_p01.png')},
+  NONPARAMETRICI_L2NORM_TLRC_C_CV.collect {|x| x.sub('+tlrc.HEAD','_p001.png')}]
+PNG_NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_CV = [
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_CV.collect {|x| x.sub('+tlrc.HEAD','_p05.png')},
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_CV.collect {|x| x.sub('+tlrc.HEAD','_p01.png')},
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_CV.collect {|x| x.sub('+tlrc.HEAD','_p001.png')}]
+
+PNG_NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR_CV = [
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p05.png')},
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p01.png')},
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p001.png')}]
+PNG_NONPARAMETRICI_L2NORM_TLRC_C_BLUR_CV = [
+  NONPARAMETRICI_L2NORM_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p05.png')},
+  NONPARAMETRICI_L2NORM_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p01.png')},
+  NONPARAMETRICI_L2NORM_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p001.png')}]
+PNG_NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR_CV = [
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p05.png')},
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p01.png')},
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p001.png')}]
+
 PNG_NONPARAMETRIC_NODESTRENGTH_TLRC_C = [
   NONPARAMETRIC_NODESTRENGTH_TLRC_C.sub('+tlrc.HEAD','_p05.png'),
   NONPARAMETRIC_NODESTRENGTH_TLRC_C.sub('+tlrc.HEAD','_p01.png'),
@@ -613,6 +720,14 @@ png_ttest_lol.zip(ttest_all_for_plotting).each do |png_list, source|
 end
 
 png_nonparametric_lol = [
+  PNG_NONPARAMETRICI_NODESTRENGTH_TLRC_C,
+  PNG_NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR,
+  PNG_NONPARAMETRICI_L2NORM_TLRC_C,
+  PNG_NONPARAMETRICI_L2NORM_TLRC_C_BLUR,
+  PNG_NONPARAMETRICI_SELECTIONCOUNT_TLRC_C,
+  PNG_NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR,
+  PNG_NONPARAMETRICI_STABILITY_TLRC_C,
+  PNG_NONPARAMETRICI_STABILITY_TLRC_C_BLUR,
   PNG_NONPARAMETRIC_NODESTRENGTH_TLRC_C,
   PNG_NONPARAMETRIC_NODESTRENGTH_TLRC_C_BLUR,
   PNG_NONPARAMETRIC_L2NORM_TLRC_C,
@@ -623,6 +738,14 @@ png_nonparametric_lol = [
   PNG_NONPARAMETRIC_STABILITY_TLRC_C_BLUR
 ]
 nonparametric_all_for_plotting = [
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C,
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR,
+  NONPARAMETRICI_L2NORM_TLRC_C,
+  NONPARAMETRICI_L2NORM_TLRC_C_BLUR,
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C,
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR,
+  NONPARAMETRICI_STABILITY_TLRC_C,
+  NONPARAMETRICI_STABILITY_TLRC_C_BLUR,
   NONPARAMETRIC_NODESTRENGTH_TLRC_C,
   NONPARAMETRIC_NODESTRENGTH_TLRC_C_BLUR,
   NONPARAMETRIC_L2NORM_TLRC_C,
@@ -787,47 +910,47 @@ end
 afni_orig_o_all =
   AFNI_NODESTRENGTH_ORIG_O +
   ZSCORE_NODESTRENGTH_ORIG_O +
-  RANK_NODESTRENGTH_ORIG_O +
+  RANKI_NODESTRENGTH_ORIG_O +
   AFNI_L2NORM_ORIG_O +
   ZSCORE_L2NORM_ORIG_O +
-  RANK_L2NORM_ORIG_O +
+  RANKI_L2NORM_ORIG_O +
   AFNI_SELECTIONCOUNT_ORIG_O +
   ZSCORE_SELECTIONCOUNT_ORIG_O +
-  RANK_SELECTIONCOUNT_ORIG_O +
+  RANKI_SELECTIONCOUNT_ORIG_O +
   AFNI_STABILITY_ORIG_O +
   ZSCORE_STABILITY_ORIG_O +
-  RANK_STABILITY_ORIG_O +
+  RANKI_STABILITY_ORIG_O +
   AFNI_NODESTRENGTH_ORIG_O_CV.flatten +
   ZSCORE_NODESTRENGTH_ORIG_O_CV.flatten +
-  RANK_NODESTRENGTH_ORIG_O_CV.flatten +
+  RANKI_NODESTRENGTH_ORIG_O_CV.flatten +
   AFNI_L2NORM_ORIG_O_CV.flatten +
   ZSCORE_L2NORM_ORIG_O_CV.flatten +
-  RANK_L2NORM_ORIG_O_CV.flatten +
+  RANKI_L2NORM_ORIG_O_CV.flatten +
   AFNI_SELECTIONCOUNT_ORIG_O_CV.flatten +
   ZSCORE_SELECTIONCOUNT_ORIG_O_CV.flatten +
-  RANK_SELECTIONCOUNT_ORIG_O_CV.flatten
+  RANKI_SELECTIONCOUNT_ORIG_O_CV.flatten
 afni_orig_c_all =
   AFNI_NODESTRENGTH_ORIG_C +
   ZSCORE_NODESTRENGTH_ORIG_C +
-  RANK_NODESTRENGTH_ORIG_C +
+  RANKI_NODESTRENGTH_ORIG_C +
   AFNI_L2NORM_ORIG_C +
   ZSCORE_L2NORM_ORIG_C +
-  RANK_L2NORM_ORIG_C +
+  RANKI_L2NORM_ORIG_C +
   AFNI_SELECTIONCOUNT_ORIG_C +
   ZSCORE_SELECTIONCOUNT_ORIG_C +
-  RANK_SELECTIONCOUNT_ORIG_C +
+  RANKI_SELECTIONCOUNT_ORIG_C +
   AFNI_STABILITY_ORIG_C +
   ZSCORE_STABILITY_ORIG_C +
-  RANK_STABILITY_ORIG_C +
+  RANKI_STABILITY_ORIG_C +
   AFNI_NODESTRENGTH_ORIG_C_CV.flatten +
   ZSCORE_NODESTRENGTH_ORIG_C_CV.flatten +
-  RANK_NODESTRENGTH_ORIG_C_CV.flatten +
+  RANKI_NODESTRENGTH_ORIG_C_CV.flatten +
   AFNI_L2NORM_ORIG_C_CV.flatten +
   ZSCORE_L2NORM_ORIG_C_CV.flatten +
-  RANK_L2NORM_ORIG_C_CV.flatten +
+  RANKI_L2NORM_ORIG_C_CV.flatten +
   AFNI_SELECTIONCOUNT_ORIG_C_CV.flatten +
   ZSCORE_SELECTIONCOUNT_ORIG_C_CV.flatten +
-  RANK_SELECTIONCOUNT_ORIG_C_CV.flatten
+  RANKI_SELECTIONCOUNT_ORIG_C_CV.flatten
 afni_orig_c_all.zip(afni_orig_o_all).each do |target,source|
   file target => source do
     afni_deoblique(target, source)
@@ -839,31 +962,31 @@ end
 
 afni_orig_c_lol = [
   AFNI_NODESTRENGTH_ORIG_C,
+  RANKI_NODESTRENGTH_ORIG_C,
   ZSCORE_NODESTRENGTH_ORIG_C,
-  RANK_NODESTRENGTH_ORIG_C,
   AFNI_L2NORM_ORIG_C,
+  RANKI_L2NORM_ORIG_C,
   ZSCORE_L2NORM_ORIG_C,
-  RANK_L2NORM_ORIG_C,
   AFNI_SELECTIONCOUNT_ORIG_C,
+  RANKI_SELECTIONCOUNT_ORIG_C,
   ZSCORE_SELECTIONCOUNT_ORIG_C,
-  RANK_SELECTIONCOUNT_ORIG_C,
   AFNI_STABILITY_ORIG_C,
-  ZSCORE_STABILITY_ORIG_C,
-  RANK_STABILITY_ORIG_C
+  RANKI_STABILITY_ORIG_C,
+  ZSCORE_STABILITY_ORIG_C
 ]
 afni_tlrc_c_lol = [
   AFNI_NODESTRENGTH_TLRC_C,
+  RANKI_NODESTRENGTH_TLRC_C,
   ZSCORE_NODESTRENGTH_TLRC_C,
-  RANK_NODESTRENGTH_TLRC_C,
   AFNI_L2NORM_TLRC_C,
+  RANKI_L2NORM_TLRC_C,
   ZSCORE_L2NORM_TLRC_C,
-  RANK_L2NORM_TLRC_C,
   AFNI_SELECTIONCOUNT_TLRC_C,
+  RANKI_SELECTIONCOUNT_TLRC_C,
   ZSCORE_SELECTIONCOUNT_TLRC_C,
-  RANK_SELECTIONCOUNT_TLRC_C,
   AFNI_STABILITY_TLRC_C,
-  ZSCORE_STABILITY_TLRC_C,
-  RANK_STABILITY_TLRC_C
+  RANKI_STABILITY_TLRC_C,
+  ZSCORE_STABILITY_TLRC_C
 ]
 afni_tlrc_c_lol.zip(afni_orig_c_lol).each do |tlrc_list,orig_list|
   tlrc_list.zip(orig_list,SUBJ_TLRC_REF).each do |target,source,anat|
@@ -879,24 +1002,24 @@ end
 afni_orig_c_lolol = [
   AFNI_NODESTRENGTH_ORIG_C_CV,
   ZSCORE_NODESTRENGTH_ORIG_C_CV,
-  RANK_NODESTRENGTH_ORIG_C_CV,
+  RANKI_NODESTRENGTH_ORIG_C_CV,
   AFNI_L2NORM_ORIG_C_CV,
   ZSCORE_L2NORM_ORIG_C_CV,
-  RANK_L2NORM_ORIG_C_CV,
+  RANKI_L2NORM_ORIG_C_CV,
   AFNI_SELECTIONCOUNT_ORIG_C_CV,
   ZSCORE_SELECTIONCOUNT_ORIG_C_CV,
-  RANK_SELECTIONCOUNT_ORIG_C_CV
+  RANKI_SELECTIONCOUNT_ORIG_C_CV
 ]
 afni_tlrc_c_lolol = [
   AFNI_NODESTRENGTH_TLRC_C_CV,
   ZSCORE_NODESTRENGTH_TLRC_C_CV,
-  RANK_NODESTRENGTH_TLRC_C_CV,
+  RANKI_NODESTRENGTH_TLRC_C_CV,
   AFNI_L2NORM_TLRC_C_CV,
   ZSCORE_L2NORM_TLRC_C_CV,
-  RANK_L2NORM_TLRC_C_CV,
+  RANKI_L2NORM_TLRC_C_CV,
   AFNI_SELECTIONCOUNT_TLRC_C_CV,
   ZSCORE_SELECTIONCOUNT_TLRC_C_CV,
-  RANK_SELECTIONCOUNT_TLRC_C_CV
+  RANKI_SELECTIONCOUNT_TLRC_C_CV
 ]
 afni_tlrc_c_lolol.zip(afni_orig_c_lolol).each do |tlrc_lol,orig_lol|
   tlrc_lol.zip(orig_lol).each do |tlrc_list,orig_list|
@@ -996,10 +1119,10 @@ avg_all_blur_cv_lol.zip(afni_lolol_cv).each do |target_list,source_lol|
 end
 
 rank_lol = [
-  RANK_NODESTRENGTH_ORIG_O,
-  RANK_L2NORM_ORIG_O,
-  RANK_SELECTIONCOUNT_ORIG_O,
-  RANK_STABILITY_ORIG_O
+  RANKI_NODESTRENGTH_ORIG_O,
+  RANKI_L2NORM_ORIG_O,
+  RANKI_SELECTIONCOUNT_ORIG_O,
+  RANKI_STABILITY_ORIG_O
 ]
 a_lol = [
   AFNI_NODESTRENGTH_ORIG_O,
@@ -1023,6 +1146,467 @@ rank_lol.zip(a_lol, p_lolol).each do |target_list,source_list,perm_lol| # loop o
     CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
   end
 end
+
+rank_lolol = [
+  RANKI_NODESTRENGTH_ORIG_O_CV,
+  RANKI_L2NORM_ORIG_O_CV,
+  RANKI_SELECTIONCOUNT_ORIG_O_CV
+]
+a_lolol = [
+  AFNI_NODESTRENGTH_ORIG_O_CV,
+  AFNI_L2NORM_ORIG_O_CV,
+  AFNI_SELECTIONCOUNT_ORIG_O_CV
+]
+p_lololol = [
+  PERMUTATIONS_NODESTRENGTH_ORIG_O_CV_BY_SUBJ,
+  PERMUTATIONS_L2NORM_ORIG_O_CV_BY_SUBJ,
+  PERMUTATIONS_SELECTIONCOUNT_ORIG_O_CV_BY_SUBJ
+]
+rank_lolol.zip(a_lolol, p_lololol).each do |target_lol,source_lol,perm_lolol| # loop over metric
+  target_lol.zip(source_lol, perm_lolol).each do |target_list,source_list,perm_lol| # loop over metric
+    target_list.zip(source_list,perm_lol,MASK_ORIG_O).each do |target,source,perm_list,mask| # loop over subject
+      file target => source do
+        nonparametric_rank_against_permutation_distribution(target, source, perm_list, mask)
+      end
+      CLOBBER.push(target)
+      CLOBBER.push(target.sub(".HEAD",".BRIK"))
+      CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+    end
+  end
+end
+
+
+rank_lol = [
+  RANK_NODESTRENGTH_TLRC_C,
+  RANK_L2NORM_TLRC_C,
+  RANK_SELECTIONCOUNT_TLRC_C,
+  RANK_STABILITY_TLRC_C
+]
+a_lol = [
+  AFNI_NODESTRENGTH_TLRC_C,
+  AFNI_L2NORM_TLRC_C,
+  AFNI_SELECTIONCOUNT_TLRC_C,
+  AFNI_STABILITY_TLRC_C
+]
+p_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_BY_SUBJ,
+  PERMUTATIONS_L2NORM_TLRC_C_BY_SUBJ,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_BY_SUBJ,
+  PERMUTATIONS_STABILITY_TLRC_C_BY_SUBJ
+]
+rank_lol.zip(a_lol, p_lolol).each do |target_list,source_list,perm_lol| # loop over metric
+  target_list.zip(source_list,perm_lol,MASK_TLRC_C).each do |target,source,perm_list,mask| # loop over subject
+    file target => source do
+      nonparametric_rank_against_permutation_distribution(target, source, perm_list, mask)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+rank_lol = [
+  RANK_NODESTRENGTH_TLRC_C_BLUR,
+  RANK_L2NORM_TLRC_C_BLUR,
+  RANK_SELECTIONCOUNT_TLRC_C_BLUR,
+  RANK_STABILITY_TLRC_C_BLUR
+]
+a_lol = [
+  AFNI_NODESTRENGTH_TLRC_C,
+  AFNI_L2NORM_TLRC_C,
+  AFNI_SELECTIONCOUNT_TLRC_C,
+  AFNI_STABILITY_TLRC_C
+]
+p_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_BY_SUBJ,
+  PERMUTATIONS_L2NORM_TLRC_C_BY_SUBJ,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_BY_SUBJ,
+  PERMUTATIONS_STABILITY_TLRC_C_BY_SUBJ
+]
+rank_lol.zip(a_lol, p_lolol).each do |target_list,source_list,perm_lol| # loop over metric
+  target_list.zip(source_list,perm_lol,MASK_TLRC_C).each do |target,source,perm_list,mask| # loop over subject
+    file target => source do
+      nonparametric_rank_against_permutation_distribution(target, source, perm_list, mask, BLURFWHM)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+rank_lolol = [
+  RANK_NODESTRENGTH_TLRC_C_CV,
+  RANK_L2NORM_TLRC_C_CV,
+  RANK_SELECTIONCOUNT_TLRC_C_CV
+]
+a_lolol = [
+  AFNI_NODESTRENGTH_TLRC_C_CV,
+  AFNI_L2NORM_TLRC_C_CV,
+  AFNI_SELECTIONCOUNT_TLRC_C_CV
+]
+p_lololol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_SUBJ,
+  PERMUTATIONS_L2NORM_TLRC_C_CV_BY_SUBJ,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV_BY_SUBJ
+]
+rank_lolol.zip(a_lolol, p_lololol).each do |target_lol,source_lol,perm_lolol| # loop over metric
+  target_lol.zip(source_lol, perm_lolol).each do |target_list,source_list,perm_lol| # loop over metric
+    target_list.zip(source_list,perm_lol,MASK_TLRC_C).each do |target,source,perm_list,mask| # loop over subject
+      file target => source do
+        nonparametric_rank_against_permutation_distribution(target, source, perm_list, mask)
+      end
+      CLOBBER.push(target)
+      CLOBBER.push(target.sub(".HEAD",".BRIK"))
+      CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+    end
+  end
+end
+
+rank_lolol = [
+  RANK_NODESTRENGTH_TLRC_C_BLUR_CV,
+  RANK_L2NORM_TLRC_C_BLUR_CV,
+  RANK_SELECTIONCOUNT_TLRC_C_BLUR_CV
+]
+a_lolol = [
+  AFNI_NODESTRENGTH_TLRC_C_CV,
+  AFNI_L2NORM_TLRC_C_CV,
+  AFNI_SELECTIONCOUNT_TLRC_C_CV
+]
+p_lololol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_SUBJ,
+  PERMUTATIONS_L2NORM_TLRC_C_CV_BY_SUBJ,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV_BY_SUBJ
+]
+rank_lolol.zip(a_lolol, p_lololol).each do |target_lol,source_lol,perm_lolol| # loop over metric
+  target_lol.zip(source_lol, perm_lolol).each do |target_list,source_list,perm_lol| # loop over metric
+    target_list.zip(source_list,perm_lol,MASK_TLRC_C).each do |target,source,perm_list,mask| # loop over subject
+      file target => source do
+        nonparametric_rank_against_permutation_distribution(target, source, perm_list, mask, BLURFWHM)
+      end
+      CLOBBER.push(target)
+      CLOBBER.push(target.sub(".HEAD",".BRIK"))
+      CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+    end
+  end
+end
+
+rank_lol = [
+  RANKI_NODESTRENGTH_TLRC_C,
+  RANKI_NODESTRENGTH_TLRC_C_BLUR,
+  RANKI_L2NORM_TLRC_C,
+  RANKI_L2NORM_TLRC_C_BLUR,
+  RANKI_SELECTIONCOUNT_TLRC_C,
+  RANKI_SELECTIONCOUNT_TLRC_C_BLUR,
+  RANKI_STABILITY_TLRC_C,
+  RANKI_STABILITY_TLRC_C_BLUR,
+  RANK_NODESTRENGTH_TLRC_C,
+  RANK_NODESTRENGTH_TLRC_C_BLUR,
+  RANK_L2NORM_TLRC_C,
+  RANK_L2NORM_TLRC_C_BLUR,
+  RANK_SELECTIONCOUNT_TLRC_C,
+  RANK_SELECTIONCOUNT_TLRC_C_BLUR,
+  RANK_STABILITY_TLRC_C,
+  RANK_STABILITY_TLRC_C_BLUR
+]
+nonparametric_all = [
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C,
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR,
+  NONPARAMETRICI_L2NORM_TLRC_C,
+  NONPARAMETRICI_L2NORM_TLRC_C_BLUR,
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C,
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR,
+  NONPARAMETRICI_STABILITY_TLRC_C,
+  NONPARAMETRICI_STABILITY_TLRC_C_BLUR,
+  NONPARAMETRIC_NODESTRENGTH_TLRC_C,
+  NONPARAMETRIC_NODESTRENGTH_TLRC_C_BLUR,
+  NONPARAMETRIC_L2NORM_TLRC_C,
+  NONPARAMETRIC_L2NORM_TLRC_C_BLUR,
+  NONPARAMETRIC_SELECTIONCOUNT_TLRC_C,
+  NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_BLUR,
+  NONPARAMETRIC_STABILITY_TLRC_C,
+  NONPARAMETRIC_STABILITY_TLRC_C_BLUR
+]
+avg_all = [
+  MEAN_NODESTRENGTH_TLRC_C,
+  MEAN_NODESTRENGTH_TLRC_C_BLUR,
+  MEAN_L2NORM_TLRC_C,
+  MEAN_L2NORM_TLRC_C_BLUR,
+  MEAN_SELECTIONCOUNT_TLRC_C,
+  MEAN_SELECTIONCOUNT_TLRC_C_BLUR,
+  MEAN_STABILITY_TLRC_C,
+  MEAN_STABILITY_TLRC_C_BLUR,
+  MEAN_NODESTRENGTH_TLRC_C,
+  MEAN_NODESTRENGTH_TLRC_C_BLUR,
+  MEAN_L2NORM_TLRC_C,
+  MEAN_L2NORM_TLRC_C_BLUR,
+  MEAN_SELECTIONCOUNT_TLRC_C,
+  MEAN_SELECTIONCOUNT_TLRC_C_BLUR,
+  MEAN_STABILITY_TLRC_C,
+  MEAN_STABILITY_TLRC_C_BLUR
+]
+nonparametric_all.zip(rank_lol,avg_all).each do |target,rank_list,avg|
+  file target => rank_list+[avg] do
+    nonparametric_count_median_thresholded_ranks(target,rank_list,avg)
+  end
+  CLOBBER.push(target)
+  CLOBBER.push(target.sub(".HEAD",".BRIK"))
+  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+end
+
+perm_lololol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV_BY_PERM
+]
+afni_lolol = [
+  AFNI_NODESTRENGTH_TLRC_C_CV,
+  AFNI_L2NORM_TLRC_C_CV,
+  AFNI_SELECTIONCOUNT_TLRC_C_CV
+]
+binomrank_cv = [
+  BINOMRANK_NODESTRENGTH_TLRC_C_CV,
+  BINOMRANK_L2NORM_TLRC_C_CV,
+  BINOMRANK_SELECTIONCOUNT_TLRC_C_CV
+]
+binomrank_cv.zip(afni_lolol,perm_lololol).each do |target_list,source_lol,perm_lolol|
+  target_list.zip(source_lol,perm_lolol).each do |target,source_list,perm_lol|
+    file target => source_list + perm_lol.flatten do
+      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+perm_lololol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV_BY_PERM
+]
+afni_lolol = [
+  AFNI_NODESTRENGTH_TLRC_C_CV,
+  AFNI_L2NORM_TLRC_C_CV,
+  AFNI_SELECTIONCOUNT_TLRC_C_CV
+]
+binomrank_cv = [
+  BINOMRANK_NODESTRENGTH_TLRC_C_BLUR_CV,
+  BINOMRANK_L2NORM_TLRC_C_BLUR_CV,
+  BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR_CV
+]
+binomrank_cv.zip(afni_lolol,perm_lololol).each do |target_list,source_lol,perm_lolol|
+  target_list.zip(source_lol,perm_lolol).each do |target,source_list,perm_lol|
+    file target => source_list + perm_lol.flatten do
+      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, BLURFWHM)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+rank_lolol = [
+  RANKI_NODESTRENGTH_TLRC_C_CV,
+  RANKI_NODESTRENGTH_TLRC_C_BLUR_CV,
+  RANKI_L2NORM_TLRC_C_CV,
+  RANKI_L2NORM_TLRC_C_BLUR_CV,
+  RANKI_SELECTIONCOUNT_TLRC_C_CV,
+  RANKI_SELECTIONCOUNT_TLRC_C_BLUR_CV,
+  RANK_NODESTRENGTH_TLRC_C_CV,
+  RANK_NODESTRENGTH_TLRC_C_BLUR_CV,
+  RANK_L2NORM_TLRC_C_CV,
+  RANK_L2NORM_TLRC_C_BLUR_CV,
+  RANK_SELECTIONCOUNT_TLRC_C_CV,
+  RANK_SELECTIONCOUNT_TLRC_C_BLUR_CV
+]
+nonparametric_lol = [
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_CV,
+  NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR_CV,
+  NONPARAMETRICI_L2NORM_TLRC_C_CV,
+  NONPARAMETRICI_L2NORM_TLRC_C_BLUR_CV,
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_CV,
+  NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR_CV,
+  NONPARAMETRIC_NODESTRENGTH_TLRC_C_CV,
+  NONPARAMETRIC_NODESTRENGTH_TLRC_C_BLUR_CV,
+  NONPARAMETRIC_L2NORM_TLRC_C_CV,
+  NONPARAMETRIC_L2NORM_TLRC_C_BLUR_CV,
+  NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_CV,
+  NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_BLUR_CV
+]
+avg_lol = [
+  MEAN_NODESTRENGTH_TLRC_C_CV,
+  MEAN_NODESTRENGTH_TLRC_C_BLUR_CV,
+  MEAN_L2NORM_TLRC_C_CV,
+  MEAN_L2NORM_TLRC_C_BLUR_CV,
+  MEAN_SELECTIONCOUNT_TLRC_C_CV,
+  MEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV,
+  MEAN_NODESTRENGTH_TLRC_C_CV,
+  MEAN_NODESTRENGTH_TLRC_C_BLUR_CV,
+  MEAN_L2NORM_TLRC_C_CV,
+  MEAN_L2NORM_TLRC_C_BLUR_CV,
+  MEAN_SELECTIONCOUNT_TLRC_C_CV,
+  MEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV
+]
+nonparametric_lol.zip(rank_lolol,avg_lol).each do |target_list,source_lol,avg_list|
+  target_list.zip(source_lol,avg_list).each do |target,rank_list,avg|
+    file target => rank_list+[avg] do
+      nonparametric_count_median_thresholded_ranks(target,rank_list,avg)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+afni_all =
+  AFNI_NODESTRENGTH_ORIG_O +
+  AFNI_L2NORM_ORIG_O +
+  AFNI_SELECTIONCOUNT_ORIG_O +
+  AFNI_STABILITY_ORIG_O
+zscore_all =
+  ZSCORE_NODESTRENGTH_ORIG_O +
+  ZSCORE_L2NORM_ORIG_O +
+  ZSCORE_SELECTIONCOUNT_ORIG_O +
+  ZSCORE_STABILITY_ORIG_O
+permmean_all =
+  PERMMEAN_NODESTRENGTH_ORIG_O +
+  PERMMEAN_L2NORM_ORIG_O +
+  PERMMEAN_SELECTIONCOUNT_ORIG_O +
+  PERMMEAN_STABILITY_ORIG_O
+permsd_all =
+  PERMSD_NODESTRENGTH_ORIG_O +
+  PERMSD_L2NORM_ORIG_O +
+  PERMSD_SELECTIONCOUNT_ORIG_O +
+  PERMSD_STABILITY_ORIG_O
+zscore_all.zip(afni_all,permmean_all,permsd_all) do |target,source,mean,sd|
+  file target => [source,mean,sd] do
+    parametric_zscore(target, source, mean, sd)
+  end
+  CLOBBER.push(target)
+  CLOBBER.push(target.sub(".HEAD",".BRIK"))
+  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+end
+
+zscore_all_tlrc =
+  RANKI_NODESTRENGTH_TLRC_C +
+  RANKI_L2NORM_TLRC_C +
+  RANKI_SELECTIONCOUNT_TLRC_C +
+  RANKI_STABILITY_TLRC_C +
+  RANKI_NODESTRENGTH_TLRC_C_CV.flatten() +
+  RANKI_L2NORM_TLRC_C_BLUR_CV.flatten() +
+  RANKI_SELECTIONCOUNT_TLRC_C_CV.flatten() +
+  ZSCORE_NODESTRENGTH_TLRC_C +
+  ZSCORE_L2NORM_TLRC_C +
+  ZSCORE_SELECTIONCOUNT_TLRC_C +
+  ZSCORE_STABILITY_TLRC_C
+zscore_all_blur =
+  RANKI_NODESTRENGTH_TLRC_C_BLUR +
+  RANKI_L2NORM_TLRC_C_BLUR +
+  RANKI_SELECTIONCOUNT_TLRC_C_BLUR +
+  RANKI_STABILITY_TLRC_C_BLUR +
+  RANKI_NODESTRENGTH_TLRC_C_BLUR_CV.flatten() +
+  RANKI_L2NORM_TLRC_C_BLUR_CV.flatten() +
+  RANKI_SELECTIONCOUNT_TLRC_C_BLUR_CV.flatten() +
+  ZSCORE_NODESTRENGTH_TLRC_C_BLUR +
+  ZSCORE_L2NORM_TLRC_C_BLUR +
+  ZSCORE_SELECTIONCOUNT_TLRC_C_BLUR +
+  ZSCORE_STABILITY_TLRC_C_BLUR
+zscore_all_blur.zip(zscore_all_tlrc).each do |target,source|
+  file target => source do
+    afni_blur(target, source, BLURFWHM)
+  end
+  CLOBBER.push(target)
+  CLOBBER.push(target.sub(".HEAD",".BRIK"))
+  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+end
+
+#namespace :nodestrength do
+#  task :afni => AFNI_NODESTRENGTH
+#  task :mean => [MEAN_NODESTRENGTH]
+#  task :zscore => ZSCORE_NODESTRENGTH
+#  task :rank => RANK_NODESTRENGTH
+#  task :ttest => [TTEST_NODESTRENGTH,TTEST_NODESTRENGTH_BLUR]
+#  task :nonparametric => NONPARAMETRIC_NODESTRENGTH
+#  namespace :plot do
+#    task :ttest => PNG_TTEST_NODESTRENGTH + PNG_TTEST_NODESTRENGTH_BLUR
+#    task :nonparametric => PNG_NONPARAMETRIC_NODESTRENGTH + PNG_NONPARAMETRIC_NODESTRENGTH_BLUR
+#  end
+#  namespace :cv do
+#    task :afni => AFNI_NODESTRENGTH_CV
+#    task :zscore => ZSCORE_NODESTRENGTH_CV
+#    task :ttest => TTEST_NODESTRENGTH_CV + TTEST_NODESTRENGTH_BLUR_CV
+#    namespace :plot do
+#      task :ttest => PNG_TTEST_NODESTRENGTH_CV.flatten + PNG_TTEST_NODESTRENGTH_BLUR_CV.flatten
+#    end
+#  end
+#end
+#
+#namespace :l2norm do
+#  task :afni => AFNI_L2NORM
+#  task :mean => [MEAN_L2NORM]
+#  task :zscore => ZSCORE_L2NORM
+#  task :rank => RANK_L2NORM
+#  task :ttest => [TTEST_L2NORM,TTEST_L2NORM_BLUR]
+#  task :nonparametric => NONPARAMETRIC_L2NORM
+#  namespace :plot do
+#    task :ttest => PNG_TTEST_L2NORM + PNG_TTEST_L2NORM_BLUR
+#    task :nonparametric => PNG_NONPARAMETRIC_L2NORM + PNG_NONPARAMETRIC_L2NORM_BLUR
+#  end
+#  namespace :cv do
+#    task :afni => AFNI_L2NORM_CV
+#    task :zscore => ZSCORE_L2NORM_CV
+#    task :ttest => TTEST_L2NORM_CV + TTEST_L2NORM_BLUR_CV
+#    namespace :plot do
+#      task :ttest => PNG_TTEST_L2NORM_CV.flatten + PNG_TTEST_L2NORM_BLUR_CV.flatten
+#    end
+#  end
+#end
+#
+#namespace :selectioncount do
+#  task :afni => AFNI_SELECTIONCOUNT
+#  task :mean => [MEAN_SELECTIONCOUNT]
+#  task :zscore => ZSCORE_SELECTIONCOUNT
+#  task :rank => RANK_SELECTIONCOUNT
+#  task :ttest => [TTEST_SELECTIONCOUNT,TTEST_BLUR_SELECTIONCOUNT]
+#  task :nonparametric => NONPARAMETRIC_SELECTIONCOUNT
+#  namespace :plot do
+#    task :ttest => PNG_TTEST_SELECTIONCOUNT + PNG_TTEST_BLUR_SELECTIONCOUNT
+#    task :nonparametric => PNG_NONPARAMETRIC_SELECTIONCOUNT + PNG_NONPARAMETRIC_BLUR_SELECTIONCOUNT
+#  end
+#  namespace :cv do
+#    task :afni => AFNI_SELECTIONCOUNT_CV
+#    task :zscore => ZSCORE_SELECTIONCOUNT_CV
+#    task :ttest => TTEST_SELECTIONCOUNT_CV + TTEST_BLUR_SELECTIONCOUNT_CV
+#    namespace :plot do
+#      task :ttest => PNG_TTEST_SELECTIONCOUNT_CV.flatten + PNG_TTEST_BLUR_SELECTIONCOUNT_CV.flatten
+#    end
+#  end
+#end
+#
+#task :makedirs => dir_list
+#namespace :stability do
+#  task :afni => AFNI_STABILITY
+#  task :mean => [MEAN_STABILITY]
+#  task :zscore => ZSCORE_STABILITY
+#  task :rank => RANK_STABILITY
+#  task :ttest => [TTEST_STABILITY,TTEST_BLUR_STABILITY]
+#  task :nonparametric => NONPARAMETRIC_STABILITY
+#  namespace :plot do
+#    task :ttest => PNG_TTEST_STABILITY + PNG_TTEST_BLUR_STABILITY
+#    task :nonparametric => PNG_NONPARAMETRIC_STABILITY + PNG_NONPARAMETRIC_BLUR_STABILITY
+#  end
+##  namespace :cv do
+##    task :afni => AFNI_STABILITY_CV
+##    task :zscore => ZSCORE_STABILITY_CV
+##    namespace :plot do
+##    end
+##  end
+#end
+#
+#namespace :mask do
+#  task :afni => AFNI_MASK
+#  task :group => GROUP_MASK
+#end
 
 ## metric x subject x crossvalidation
 #rank_lolol = [
@@ -1133,266 +1717,4 @@ end
 #      CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
 #    end
 #  end
-#end
-
-rank_lol = [
-  RANK_NODESTRENGTH_TLRC_C,
-  RANK_NODESTRENGTH_TLRC_C_BLUR,
-  RANK_L2NORM_TLRC_C,
-  RANK_L2NORM_TLRC_C_BLUR,
-  RANK_SELECTIONCOUNT_TLRC_C,
-  RANK_SELECTIONCOUNT_TLRC_C_BLUR,
-  RANK_STABILITY_TLRC_C,
-  RANK_STABILITY_TLRC_C_BLUR
-]
-nonparametric_all = [
-  NONPARAMETRIC_NODESTRENGTH_TLRC_C,
-  NONPARAMETRIC_NODESTRENGTH_TLRC_C_BLUR,
-  NONPARAMETRIC_L2NORM_TLRC_C,
-  NONPARAMETRIC_L2NORM_TLRC_C_BLUR,
-  NONPARAMETRIC_SELECTIONCOUNT_TLRC_C,
-  NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_BLUR,
-  NONPARAMETRIC_STABILITY_TLRC_C,
-  NONPARAMETRIC_STABILITY_TLRC_C_BLUR
-]
-avg_all = [
-  MEAN_NODESTRENGTH_TLRC_C,
-  MEAN_NODESTRENGTH_TLRC_C_BLUR,
-  MEAN_L2NORM_TLRC_C,
-  MEAN_L2NORM_TLRC_C_BLUR,
-  MEAN_SELECTIONCOUNT_TLRC_C,
-  MEAN_SELECTIONCOUNT_TLRC_C_BLUR,
-  MEAN_STABILITY_TLRC_C,
-  MEAN_STABILITY_TLRC_C_BLUR
-]
-nonparametric_all.zip(rank_lol,avg_all).each do |target,rank_list,avg|
-  file target => rank_list+[avg] do
-    nonparametric_count_median_thresholded_ranks(target,rank_list,avg)
-  end
-  CLOBBER.push(target)
-  CLOBBER.push(target.sub(".HEAD",".BRIK"))
-  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
-end
-
-perm_lololol = [
-  PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_PERM,
-  PERMUTATIONS_L2NORM_TLRC_C_CV_BY_PERM,
-  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV_BY_PERM
-]
-afni_lolol = [
-  AFNI_NODESTRENGTH_TLRC_C_CV,
-  AFNI_L2NORM_TLRC_C_CV,
-  AFNI_SELECTIONCOUNT_TLRC_C_CV
-]
-binomrank_cv = [
-  BINOMRANK_NODESTRENGTH_TLRC_C_CV,
-  BINOMRANK_L2NORM_TLRC_C_CV,
-  BINOMRANK_SELECTIONCOUNT_TLRC_C_CV
-]
-binomrank_cv.zip(afni_lolol,perm_lololol).each do |target_list,source_lol,perm_lolol|
-  target_list.zip(source_lol,perm_lolol).each do |target,source_list,perm_lol|
-    file target => source_list + perm_lol.flatten do
-      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC)
-    end
-    CLOBBER.push(target)
-    CLOBBER.push(target.sub(".HEAD",".BRIK"))
-    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
-  end
-end
-
-perm_lololol = [
-  PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_PERM,
-  PERMUTATIONS_L2NORM_TLRC_C_CV_BY_PERM,
-  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV_BY_PERM
-]
-afni_lolol = [
-  AFNI_NODESTRENGTH_TLRC_C_CV,
-  AFNI_L2NORM_TLRC_C_CV,
-  AFNI_SELECTIONCOUNT_TLRC_C_CV
-]
-binomrank_cv = [
-  BINOMRANK_NODESTRENGTH_TLRC_C_BLUR_CV,
-  BINOMRANK_L2NORM_TLRC_C_BLUR_CV,
-  BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR_CV
-]
-binomrank_cv.zip(afni_lolol,perm_lololol).each do |target_list,source_lol,perm_lolol|
-  target_list.zip(source_lol,perm_lolol).each do |target,source_list,perm_lol|
-    file target => source_list + perm_lol.flatten do
-      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, BLURFWHM)
-    end
-    CLOBBER.push(target)
-    CLOBBER.push(target.sub(".HEAD",".BRIK"))
-    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
-  end
-end
-
-rank_lolol = [
-  RANK_NODESTRENGTH_TLRC_C_CV,
-  RANK_NODESTRENGTH_TLRC_C_BLUR_CV,
-  RANK_L2NORM_TLRC_C_CV,
-  RANK_L2NORM_TLRC_C_BLUR_CV,
-  RANK_SELECTIONCOUNT_TLRC_C_CV,
-  RANK_SELECTIONCOUNT_TLRC_C_BLUR_CV,
-]
-nonparametric_lol = [
-  NONPARAMETRIC_NODESTRENGTH_TLRC_C_CV,
-  NONPARAMETRIC_NODESTRENGTH_TLRC_C_BLUR_CV,
-  NONPARAMETRIC_L2NORM_TLRC_C_CV,
-  NONPARAMETRIC_L2NORM_TLRC_C_BLUR_CV,
-  NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_CV,
-  NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_BLUR_CV,
-]
-avg_lol = [
-  MEAN_NODESTRENGTH_TLRC_C_CV,
-  MEAN_NODESTRENGTH_TLRC_C_BLUR_CV,
-  MEAN_L2NORM_TLRC_C_CV,
-  MEAN_L2NORM_TLRC_C_BLUR_CV,
-  MEAN_SELECTIONCOUNT_TLRC_C_CV,
-  MEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV,
-]
-nonparametric_lol.zip(rank_lolol,avg_lol).each do |target_list,source_lol,avg_list|
-  target_list.zip(source_lol,avg_list).each do |target,rank_list,avg|
-    file target => rank_list+[avg] do
-      nonparametric_count_median_thresholded_ranks(target,rank_list,avg)
-    end
-    CLOBBER.push(target)
-    CLOBBER.push(target.sub(".HEAD",".BRIK"))
-    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
-  end
-end
-
-afni_all =
-  AFNI_NODESTRENGTH_ORIG_O +
-  AFNI_L2NORM_ORIG_O +
-  AFNI_SELECTIONCOUNT_ORIG_O +
-  AFNI_STABILITY_ORIG_O
-zscore_all =
-  ZSCORE_NODESTRENGTH_ORIG_O +
-  ZSCORE_L2NORM_ORIG_O +
-  ZSCORE_SELECTIONCOUNT_ORIG_O +
-  ZSCORE_STABILITY_ORIG_O
-permmean_all =
-  PERMMEAN_NODESTRENGTH_ORIG_O +
-  PERMMEAN_L2NORM_ORIG_O +
-  PERMMEAN_SELECTIONCOUNT_ORIG_O +
-  PERMMEAN_STABILITY_ORIG_O
-permsd_all =
-  PERMSD_NODESTRENGTH_ORIG_O +
-  PERMSD_L2NORM_ORIG_O +
-  PERMSD_SELECTIONCOUNT_ORIG_O +
-  PERMSD_STABILITY_ORIG_O
-zscore_all.zip(afni_all,permmean_all,permsd_all) do |target,source,mean,sd|
-  file target => [source,mean,sd] do
-    parametric_zscore(target, source, mean, sd)
-  end
-  CLOBBER.push(target)
-  CLOBBER.push(target.sub(".HEAD",".BRIK"))
-  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
-end
-
-zscore_all_tlrc =
-  ZSCORE_NODESTRENGTH_TLRC_C +
-  ZSCORE_L2NORM_TLRC_C +
-  ZSCORE_SELECTIONCOUNT_TLRC_C +
-  ZSCORE_STABILITY_TLRC_C
-zscore_all_blur =
-  ZSCORE_NODESTRENGTH_TLRC_C_BLUR +
-  ZSCORE_L2NORM_TLRC_C_BLUR +
-  ZSCORE_SELECTIONCOUNT_TLRC_C_BLUR +
-  ZSCORE_STABILITY_TLRC_C_BLUR
-zscore_all_blur.zip(zscore_all_tlrc).each do |target,source|
-  file target => source do
-    afni_blur(target, source, BLURFWHM)
-  end
-  CLOBBER.push(target)
-  CLOBBER.push(target.sub(".HEAD",".BRIK"))
-  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
-end
-
-#namespace :nodestrength do
-#  task :afni => AFNI_NODESTRENGTH
-#  task :mean => [MEAN_NODESTRENGTH]
-#  task :zscore => ZSCORE_NODESTRENGTH
-#  task :rank => RANK_NODESTRENGTH
-#  task :ttest => [TTEST_NODESTRENGTH,TTEST_NODESTRENGTH_BLUR]
-#  task :nonparametric => NONPARAMETRIC_NODESTRENGTH
-#  namespace :plot do
-#    task :ttest => PNG_TTEST_NODESTRENGTH + PNG_TTEST_NODESTRENGTH_BLUR
-#    task :nonparametric => PNG_NONPARAMETRIC_NODESTRENGTH + PNG_NONPARAMETRIC_NODESTRENGTH_BLUR
-#  end
-#  namespace :cv do
-#    task :afni => AFNI_NODESTRENGTH_CV
-#    task :zscore => ZSCORE_NODESTRENGTH_CV
-#    task :ttest => TTEST_NODESTRENGTH_CV + TTEST_NODESTRENGTH_BLUR_CV
-#    namespace :plot do
-#      task :ttest => PNG_TTEST_NODESTRENGTH_CV.flatten + PNG_TTEST_NODESTRENGTH_BLUR_CV.flatten
-#    end
-#  end
-#end
-#
-#namespace :l2norm do
-#  task :afni => AFNI_L2NORM
-#  task :mean => [MEAN_L2NORM]
-#  task :zscore => ZSCORE_L2NORM
-#  task :rank => RANK_L2NORM
-#  task :ttest => [TTEST_L2NORM,TTEST_L2NORM_BLUR]
-#  task :nonparametric => NONPARAMETRIC_L2NORM
-#  namespace :plot do
-#    task :ttest => PNG_TTEST_L2NORM + PNG_TTEST_L2NORM_BLUR
-#    task :nonparametric => PNG_NONPARAMETRIC_L2NORM + PNG_NONPARAMETRIC_L2NORM_BLUR
-#  end
-#  namespace :cv do
-#    task :afni => AFNI_L2NORM_CV
-#    task :zscore => ZSCORE_L2NORM_CV
-#    task :ttest => TTEST_L2NORM_CV + TTEST_L2NORM_BLUR_CV
-#    namespace :plot do
-#      task :ttest => PNG_TTEST_L2NORM_CV.flatten + PNG_TTEST_L2NORM_BLUR_CV.flatten
-#    end
-#  end
-#end
-#
-#namespace :selectioncount do
-#  task :afni => AFNI_SELECTIONCOUNT
-#  task :mean => [MEAN_SELECTIONCOUNT]
-#  task :zscore => ZSCORE_SELECTIONCOUNT
-#  task :rank => RANK_SELECTIONCOUNT
-#  task :ttest => [TTEST_SELECTIONCOUNT,TTEST_BLUR_SELECTIONCOUNT]
-#  task :nonparametric => NONPARAMETRIC_SELECTIONCOUNT
-#  namespace :plot do
-#    task :ttest => PNG_TTEST_SELECTIONCOUNT + PNG_TTEST_BLUR_SELECTIONCOUNT
-#    task :nonparametric => PNG_NONPARAMETRIC_SELECTIONCOUNT + PNG_NONPARAMETRIC_BLUR_SELECTIONCOUNT
-#  end
-#  namespace :cv do
-#    task :afni => AFNI_SELECTIONCOUNT_CV
-#    task :zscore => ZSCORE_SELECTIONCOUNT_CV
-#    task :ttest => TTEST_SELECTIONCOUNT_CV + TTEST_BLUR_SELECTIONCOUNT_CV
-#    namespace :plot do
-#      task :ttest => PNG_TTEST_SELECTIONCOUNT_CV.flatten + PNG_TTEST_BLUR_SELECTIONCOUNT_CV.flatten
-#    end
-#  end
-#end
-#
-#task :makedirs => dir_list
-#namespace :stability do
-#  task :afni => AFNI_STABILITY
-#  task :mean => [MEAN_STABILITY]
-#  task :zscore => ZSCORE_STABILITY
-#  task :rank => RANK_STABILITY
-#  task :ttest => [TTEST_STABILITY,TTEST_BLUR_STABILITY]
-#  task :nonparametric => NONPARAMETRIC_STABILITY
-#  namespace :plot do
-#    task :ttest => PNG_TTEST_STABILITY + PNG_TTEST_BLUR_STABILITY
-#    task :nonparametric => PNG_NONPARAMETRIC_STABILITY + PNG_NONPARAMETRIC_BLUR_STABILITY
-#  end
-##  namespace :cv do
-##    task :afni => AFNI_STABILITY_CV
-##    task :zscore => ZSCORE_STABILITY_CV
-##    namespace :plot do
-##    end
-##  end
-#end
-#
-#namespace :mask do
-#  task :afni => AFNI_MASK
-#  task :group => GROUP_MASK
 #end
