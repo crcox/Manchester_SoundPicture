@@ -160,6 +160,10 @@ RANK_STABILITY_ORIG_O = AFNI_STABILITY_ORIG_O.pathmap("rank/stability/%f")
 RANK_STABILITY_ORIG_C = AFNI_STABILITY_ORIG_C.pathmap("rank/stability/%f")
 RANK_STABILITY_TLRC_C = AFNI_STABILITY_TLRC_C.pathmap("rank/stability/%f")
 RANK_STABILITY_TLRC_C_BLUR = TXT_STABILITY_ORIG_O.pathmap("rank/stability/%n.b#{BLURFWHM}_C+tlrc.HEAD")
+RANK_OVERLAP_ORIG_O = AFNI_NODESTRENGTH_ORIG_O.pathmap("rank/overlap/%f")
+RANK_OVERLAP_ORIG_C = AFNI_NODESTRENGTH_ORIG_C.pathmap("rank/overlap/%f")
+RANK_OVERLAP_TLRC_C = AFNI_NODESTRENGTH_TLRC_C.pathmap("rank/overlap/%f")
+RANK_OVERLAP_TLRC_C_BLUR = TXT_NODESTRENGTH_ORIG_O.pathmap("rank/overlap/%n.b#{BLURFWHM}_C+tlrc.HEAD")
 
 RANK_NODESTRENGTH_ORIG_O_CV = AFNI_NODESTRENGTH_ORIG_O_CV.map {|s| s.pathmap("rank/nodestrength/cv/%f")}
 RANK_NODESTRENGTH_ORIG_C_CV = AFNI_NODESTRENGTH_ORIG_C_CV.map {|s| s.pathmap("rank/nodestrength/cv/%f")}
@@ -173,6 +177,10 @@ RANK_SELECTIONCOUNT_ORIG_O_CV = AFNI_SELECTIONCOUNT_ORIG_O_CV.map {|s| s.pathmap
 RANK_SELECTIONCOUNT_ORIG_C_CV = AFNI_SELECTIONCOUNT_ORIG_C_CV.map {|s| s.pathmap("rank/selectioncount/cv/%f")}
 RANK_SELECTIONCOUNT_TLRC_C_CV = AFNI_SELECTIONCOUNT_TLRC_C_CV.map {|s| s.pathmap("rank/selectioncount/cv/%f")}
 RANK_SELECTIONCOUNT_TLRC_C_BLUR_CV = TXT_SELECTIONCOUNT_ORIG_O_CV.map {|s| s.pathmap("rank/selectioncount/cv/%n.b#{BLURFWHM}_C+tlrc.HEAD")}
+RANK_OVERLAP_ORIG_O_CV = AFNI_NODESTRENGTH_ORIG_O_CV.map {|s| s.pathmap("rank/overlap/cv/%f")}
+RANK_OVERLAP_ORIG_C_CV = AFNI_NODESTRENGTH_ORIG_C_CV.map {|s| s.pathmap("rank/overlap/cv/%f")}
+RANK_OVERLAP_TLRC_C_CV = AFNI_NODESTRENGTH_TLRC_C_CV.map {|s| s.pathmap("rank/overlap/cv/%f")}
+RANK_OVERLAP_TLRC_C_BLUR_CV = TXT_NODESTRENGTH_ORIG_O_CV.map {|s| s.pathmap("rank/overlap/cv/%n.b#{BLURFWHM}_C+tlrc.HEAD")}
 
 RANKI_NODESTRENGTH_ORIG_O = AFNI_NODESTRENGTH_ORIG_O.pathmap("ranki/nodestrength/%f")
 RANKI_NODESTRENGTH_ORIG_C = AFNI_NODESTRENGTH_ORIG_C.pathmap("ranki/nodestrength/%f")
@@ -190,6 +198,10 @@ RANKI_STABILITY_ORIG_O = AFNI_STABILITY_ORIG_O.pathmap("ranki/stability/%f")
 RANKI_STABILITY_ORIG_C = AFNI_STABILITY_ORIG_C.pathmap("ranki/stability/%f")
 RANKI_STABILITY_TLRC_C = AFNI_STABILITY_TLRC_C.pathmap("ranki/stability/%f")
 RANKI_STABILITY_TLRC_C_BLUR = TXT_STABILITY_ORIG_O.pathmap("ranki/stability/%n.b#{BLURFWHM}_C+tlrc.HEAD")
+RANKI_OVERLAP_ORIG_O = AFNI_NODESTRENGTH_ORIG_O.pathmap("ranki/overlap/%f")
+RANKI_OVERLAP_ORIG_C = AFNI_NODESTRENGTH_ORIG_C.pathmap("ranki/overlap/%f")
+RANKI_OVERLAP_TLRC_C = AFNI_NODESTRENGTH_TLRC_C.pathmap("ranki/overlap/%f")
+RANKI_OVERLAP_TLRC_C_BLUR = TXT_NODESTRENGTH_ORIG_O.pathmap("ranki/overlap/%n.b#{BLURFWHM}_C+tlrc.HEAD")
 
 RANKI_NODESTRENGTH_ORIG_O_CV = AFNI_NODESTRENGTH_ORIG_O_CV.map {|s| s.pathmap("ranki/nodestrength/cv/%f")}
 RANKI_NODESTRENGTH_ORIG_C_CV = AFNI_NODESTRENGTH_ORIG_C_CV.map {|s| s.pathmap("ranki/nodestrength/cv/%f")}
@@ -203,6 +215,10 @@ RANKI_SELECTIONCOUNT_ORIG_O_CV = AFNI_SELECTIONCOUNT_ORIG_O_CV.map {|s| s.pathma
 RANKI_SELECTIONCOUNT_ORIG_C_CV = AFNI_SELECTIONCOUNT_ORIG_C_CV.map {|s| s.pathmap("ranki/selectioncount/cv/%f")}
 RANKI_SELECTIONCOUNT_TLRC_C_CV = AFNI_SELECTIONCOUNT_TLRC_C_CV.map {|s| s.pathmap("ranki/selectioncount/cv/%f")}
 RANKI_SELECTIONCOUNT_TLRC_C_BLUR_CV = TXT_SELECTIONCOUNT_ORIG_O_CV.map {|s| s.pathmap("ranki/selectioncount/cv/%n.b#{BLURFWHM}_C+tlrc.HEAD")}
+RANKI_OVERLAP_ORIG_O_CV = AFNI_NODESTRENGTH_ORIG_O_CV.map {|s| s.pathmap("ranki/overlap/cv/%f")}
+RANKI_OVERLAP_ORIG_C_CV = AFNI_NODESTRENGTH_ORIG_C_CV.map {|s| s.pathmap("ranki/overlap/cv/%f")}
+RANKI_OVERLAP_TLRC_C_CV = AFNI_NODESTRENGTH_TLRC_C_CV.map {|s| s.pathmap("ranki/overlap/cv/%f")}
+RANKI_OVERLAP_TLRC_C_BLUR_CV = TXT_NODESTRENGTH_ORIG_O_CV.map {|s| s.pathmap("ranki/overlap/cv/%n.b#{BLURFWHM}_C+tlrc.HEAD")}
 
 ZSCORE_NODESTRENGTH_ORIG_O = TXT_NODESTRENGTH_ORIG_O.pathmap("zscore/nodestrength/%n_O+orig.HEAD")
 ZSCORE_NODESTRENGTH_ORIG_C = TXT_NODESTRENGTH_ORIG_O.pathmap("zscore/nodestrength/%n_C+orig.HEAD")
@@ -258,6 +274,8 @@ NONPARAMETRIC_SELECTIONCOUNT_TLRC_C = "nonparametric_selectioncount_C+tlrc.HEAD"
 NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_BLUR = "nonparametric_selectioncount.b#{BLURFWHM}_C+tlrc.HEAD"
 NONPARAMETRIC_STABILITY_TLRC_C = "nonparametric_stability_C+tlrc.HEAD"
 NONPARAMETRIC_STABILITY_TLRC_C_BLUR = "nonparametric_stability.b#{BLURFWHM}_C+tlrc.HEAD"
+NONPARAMETRIC_OVERLAP_TLRC_C = "nonparametric_overlap_C+tlrc.HEAD"
+NONPARAMETRIC_OVERLAP_TLRC_C_BLUR = "nonparametric_overlap.b#{BLURFWHM}_C+tlrc.HEAD"
 
 NONPARAMETRIC_NODESTRENGTH_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametric_nodestrength_#{i}_C+tlrc.HEAD"})
 NONPARAMETRIC_NODESTRENGTH_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametric_nodestrength_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
@@ -265,6 +283,8 @@ NONPARAMETRIC_L2NORM_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collec
 NONPARAMETRIC_L2NORM_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametric_l2norm_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
 NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametric_selectioncount_#{i}_C+tlrc.HEAD"})
 NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametric_selectioncount_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+NONPARAMETRIC_OVERLAP_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametric_overlap_#{i}_C+tlrc.HEAD"})
+NONPARAMETRIC_OVERLAP_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametric_overlap_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
 
 NONPARAMETRICI_NODESTRENGTH_TLRC_C = "nonparametrici_nodestrength_C+tlrc.HEAD"
 NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR = "nonparametrici_nodestrength.b#{BLURFWHM}_C+tlrc.HEAD"
@@ -274,6 +294,8 @@ NONPARAMETRICI_SELECTIONCOUNT_TLRC_C = "nonparametrici_selectioncount_C+tlrc.HEA
 NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR = "nonparametrici_selectioncount.b#{BLURFWHM}_C+tlrc.HEAD"
 NONPARAMETRICI_STABILITY_TLRC_C = "nonparametrici_stability_C+tlrc.HEAD"
 NONPARAMETRICI_STABILITY_TLRC_C_BLUR = "nonparametrici_stability.b#{BLURFWHM}_C+tlrc.HEAD"
+NONPARAMETRICI_OVERLAP_TLRC_C = "nonparametrici_overlap_C+tlrc.HEAD"
+NONPARAMETRICI_OVERLAP_TLRC_C_BLUR = "nonparametrici_overlap.b#{BLURFWHM}_C+tlrc.HEAD"
 
 NONPARAMETRICI_NODESTRENGTH_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_nodestrength_#{i}_C+tlrc.HEAD"})
 NONPARAMETRICI_NODESTRENGTH_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_nodestrength_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
@@ -281,22 +303,40 @@ NONPARAMETRICI_L2NORM_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.colle
 NONPARAMETRICI_L2NORM_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_l2norm_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
 NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_selectioncount_#{i}_C+tlrc.HEAD"})
 NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_selectioncount_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+NONPARAMETRICI_OVERLAP_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_overlap_#{i}_C+tlrc.HEAD"})
+NONPARAMETRICI_OVERLAP_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_overlap_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
 
-BINOMRANK_NODESTRENGTH_TLRC_C = "binomrank_nodestrength_C+tlrc.HEAD"
-BINOMRANK_NODESTRENGTH_TLRC_C_BLUR = "binomrank_nodestrength.b#{BLURFWHM}_C+tlrc.HEAD"
-BINOMRANK_L2NORM_TLRC_C = "binomrank_l2norm_C+tlrc.HEAD"
-BINOMRANK_L2NORM_TLRC_C_BLUR = "binomrank_l2norm.b#{BLURFWHM}_C+tlrc.HEAD"
-BINOMRANK_SELECTIONCOUNT_TLRC_C = "binomrank_selectioncount_C+tlrc.HEAD"
-BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR = "binomrank_selectioncount.b#{BLURFWHM}_C+tlrc.HEAD"
-BINOMRANK_STABILITY_TLRC_C = "binomrank_stability_C+tlrc.HEAD"
-BINOMRANK_STABILITY_TLRC_C_BLUR = "binomrank_stability.b#{BLURFWHM}_C+tlrc.HEAD"
+BINOMRANK_MEAN_NODESTRENGTH_TLRC_C = "binomrank_mean_nodestrength_C+tlrc.HEAD"
+BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR = "binomrank_mean_nodestrength.b#{BLURFWHM}_C+tlrc.HEAD"
+BINOMRANK_MEAN_L2NORM_TLRC_C = "binomrank_mean_l2norm_C+tlrc.HEAD"
+BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR = "binomrank_mean_l2norm.b#{BLURFWHM}_C+tlrc.HEAD"
+BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C = "binomrank_mean_selectioncount_C+tlrc.HEAD"
+BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR = "binomrank_mean_selectioncount.b#{BLURFWHM}_C+tlrc.HEAD"
+BINOMRANK_MEAN_STABILITY_TLRC_C = "binomrank_mean_stability_C+tlrc.HEAD"
+BINOMRANK_MEAN_STABILITY_TLRC_C_BLUR = "binomrank_mean_stability.b#{BLURFWHM}_C+tlrc.HEAD"
 
-BINOMRANK_NODESTRENGTH_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_nodestrength_#{i}_C+tlrc.HEAD"})
-BINOMRANK_NODESTRENGTH_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_nodestrength_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
-BINOMRANK_L2NORM_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_l2norm_#{i}_C+tlrc.HEAD"})
-BINOMRANK_L2NORM_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_l2norm_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
-BINOMRANK_SELECTIONCOUNT_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_selectioncount_#{i}_C+tlrc.HEAD"})
-BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_selectioncount_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_mean_nodestrength_#{i}_C+tlrc.HEAD"})
+BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_mean_nodestrength_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+BINOMRANK_MEAN_L2NORM_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_mean_l2norm_#{i}_C+tlrc.HEAD"})
+BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_mean_l2norm_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_mean_selectioncount_#{i}_C+tlrc.HEAD"})
+BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_mean_selectioncount_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+
+BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C = "binomrank_overlap_nodestrength_C+tlrc.HEAD"
+BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR = "binomrank_overlap_nodestrength.b#{BLURFWHM}_C+tlrc.HEAD"
+BINOMRANK_OVERLAP_L2NORM_TLRC_C = "binomrank_overlap_l2norm_C+tlrc.HEAD"
+BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR = "binomrank_overlap_l2norm.b#{BLURFWHM}_C+tlrc.HEAD"
+BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C = "binomrank_overlap_selectioncount_C+tlrc.HEAD"
+BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR = "binomrank_overlap_selectioncount.b#{BLURFWHM}_C+tlrc.HEAD"
+BINOMRANK_OVERLAP_STABILITY_TLRC_C = "binomrank_overlap_stability_C+tlrc.HEAD"
+BINOMRANK_OVERLAP_STABILITY_TLRC_C_BLUR = "binomrank_overlap_stability.b#{BLURFWHM}_C+tlrc.HEAD"
+
+BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_overlap_nodestrength_#{i}_C+tlrc.HEAD"})
+BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_overlap_nodestrength_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+BINOMRANK_OVERLAP_L2NORM_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_overlap_l2norm_#{i}_C+tlrc.HEAD"})
+BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_overlap_l2norm_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_overlap_selectioncount_#{i}_C+tlrc.HEAD"})
+BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_overlap_selectioncount_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
 
 WILCOXON_NODESTRENGTH_TLRC_C = "wilcoxon_nodestrength_C+tlrc.HEAD"
 WILCOXON_NODESTRENGTH_TLRC_C_BLUR = "wilcoxon_nodestrength.b#{BLURFWHM}_C+tlrc.HEAD"
@@ -329,6 +369,11 @@ MEAN_L2NORM_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "m
 MEAN_L2NORM_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "mean_l2norm_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
 MEAN_SELECTIONCOUNT_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "mean_selectioncount_#{i}_C+tlrc.HEAD"})
 MEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "mean_selectioncount_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+
+OVERLAP_TLRC_C = "overlap_C+tlrc.HEAD"
+OVERLAP_TLRC_C_BLUR = "overlap.b#{BLURFWHM}_C+tlrc.HEAD"
+OVERLAP_TLRC_C_CV = CROSSVALIDATION_INDEX.collect {|i| "overlap_#{i}_C+tlrc.HEAD"}
+OVERLAP_TLRC_C_BLUR_CV = CROSSVALIDATION_INDEX.collect {|i| "overlap_#{i}.b4_C+tlrc.HEAD"}
 
 MEAN_RANK_NODESTRENGTH_TLRC_C = "mean_rank_nodestrength_C+tlrc.HEAD"
 MEAN_RANK_NODESTRENGTH_TLRC_C_BLUR = "mean_rank_nodestrength.b#{BLURFWHM}_C+tlrc.HEAD"
@@ -622,58 +667,113 @@ PNG_NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_BLUR_CV = [
   NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p01.png')},
   NONPARAMETRIC_SELECTIONCOUNT_TLRC_C_BLUR_CV.collect {|x| x.sub('+tlrc.HEAD','_p001.png')}]
 
-# BINOMRANK
-# ---------
+# BINOMRANK_MEAN
+# --------------
 pvals = %w(_p05.png _p01.png _p001.png _p0001.png _p00001.png)
-PNG_BINOMRANK_NODESTRENGTH_TLRC_C = pvals.collect {|p|
-  BINOMRANK_NODESTRENGTH_TLRC_C.sub('+tlrc.HEAD',p)
+PNG_BINOMRANK_MEAN_NODESTRENGTH_TLRC_C = pvals.collect {|p|
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C.sub('+tlrc.HEAD',p)
 }
-PNG_BINOMRANK_L2NORM_TLRC_C = pvals.collect {|p|
-  BINOMRANK_L2NORM_TLRC_C.sub('+tlrc.HEAD',p)
+PNG_BINOMRANK_MEAN_L2NORM_TLRC_C = pvals.collect {|p|
+  BINOMRANK_MEAN_L2NORM_TLRC_C.sub('+tlrc.HEAD',p)
 }
-PNG_BINOMRANK_SELECTIONCOUNT_TLRC_C = pvals.collect {|p|
-  BINOMRANK_SELECTIONCOUNT_TLRC_C.sub('+tlrc.HEAD',p)
+PNG_BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C = pvals.collect {|p|
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C.sub('+tlrc.HEAD',p)
 }
-PNG_BINOMRANK_STABILITY_TLRC_C = pvals.collect {|p|
-  BINOMRANK_STABILITY_TLRC_C.sub('+tlrc.HEAD',p)
-}
-
-PNG_BINOMRANK_NODESTRENGTH_TLRC_C_BLUR = pvals.collect {|p|
-  BINOMRANK_NODESTRENGTH_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
-}
-PNG_BINOMRANK_L2NORM_TLRC_C_BLUR = pvals.collect {|p|
-  BINOMRANK_L2NORM_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
-}
-PNG_BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR = pvals.collect {|p|
-  BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
-}
-PNG_BINOMRANK_STABILITY_TLRC_C_BLUR = pvals.collect {|p|
-  BINOMRANK_STABILITY_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
+PNG_BINOMRANK_MEAN_STABILITY_TLRC_C = pvals.collect {|p|
+  BINOMRANK_MEAN_STABILITY_TLRC_C.sub('+tlrc.HEAD',p)
 }
 
-PNG_BINOMRANK_NODESTRENGTH_TLRC_C_CV =
-  BINOMRANK_NODESTRENGTH_TLRC_C_CV.collect {|x|
+PNG_BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR = pvals.collect {|p|
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
+}
+PNG_BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR = pvals.collect {|p|
+  BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
+}
+PNG_BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR = pvals.collect {|p|
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
+}
+PNG_BINOMRANK_MEAN_STABILITY_TLRC_C_BLUR = pvals.collect {|p|
+  BINOMRANK_MEAN_STABILITY_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
+}
+
+PNG_BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_CV =
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_CV.collect {|x|
     pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
   }
-PNG_BINOMRANK_L2NORM_TLRC_C_CV =
-  BINOMRANK_L2NORM_TLRC_C_CV.collect {|x|
+PNG_BINOMRANK_MEAN_L2NORM_TLRC_C_CV =
+  BINOMRANK_MEAN_L2NORM_TLRC_C_CV.collect {|x|
     pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
   }
-PNG_BINOMRANK_SELECTIONCOUNT_TLRC_C_CV =
-  BINOMRANK_SELECTIONCOUNT_TLRC_C_CV.collect {|x|
+PNG_BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_CV =
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_CV.collect {|x|
     pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
   }
 
-PNG_BINOMRANK_NODESTRENGTH_TLRC_C_BLUR_CV =
-  BINOMRANK_NODESTRENGTH_TLRC_C_BLUR_CV.collect {|x|
+PNG_BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR_CV =
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR_CV.collect {|x|
     pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
   }
-PNG_BINOMRANK_L2NORM_TLRC_C_BLUR_CV =
-  BINOMRANK_L2NORM_TLRC_C_BLUR_CV.collect {|x|
+PNG_BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR_CV =
+  BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR_CV.collect {|x|
     pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
   }
-PNG_BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR_CV =
-  BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR_CV.collect {|x|
+PNG_BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV =
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV.collect {|x|
+    pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
+  }
+
+# BINOMRANK_OVERLAP
+# -----------------
+pvals = %w(_p05.png _p01.png _p001.png _p0001.png _p00001.png)
+PNG_BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C = pvals.collect {|p|
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C.sub('+tlrc.HEAD',p)
+}
+PNG_BINOMRANK_OVERLAP_L2NORM_TLRC_C = pvals.collect {|p|
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C.sub('+tlrc.HEAD',p)
+}
+PNG_BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C = pvals.collect {|p|
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C.sub('+tlrc.HEAD',p)
+}
+PNG_BINOMRANK_OVERLAP_STABILITY_TLRC_C = pvals.collect {|p|
+  BINOMRANK_OVERLAP_STABILITY_TLRC_C.sub('+tlrc.HEAD',p)
+}
+
+PNG_BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR = pvals.collect {|p|
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
+}
+PNG_BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR = pvals.collect {|p|
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
+}
+PNG_BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR = pvals.collect {|p|
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
+}
+PNG_BINOMRANK_OVERLAP_STABILITY_TLRC_C_BLUR = pvals.collect {|p|
+  BINOMRANK_OVERLAP_STABILITY_TLRC_C_BLUR.sub('+tlrc.HEAD',p)
+}
+
+PNG_BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_CV =
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_CV.collect {|x|
+    pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
+  }
+PNG_BINOMRANK_OVERLAP_L2NORM_TLRC_C_CV =
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C_CV.collect {|x|
+    pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
+  }
+PNG_BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_CV =
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_CV.collect {|x|
+    pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
+  }
+
+PNG_BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR_CV =
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR_CV.collect {|x|
+    pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
+  }
+PNG_BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR_CV =
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR_CV.collect {|x|
+    pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
+  }
+PNG_BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR_CV =
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR_CV.collect {|x|
     pvals.collect {|p| x.sub('+tlrc.HEAD',p)}
   }
 
@@ -787,24 +887,40 @@ png_nonparametric_lol_cv.zip(nonparametric_all_for_plotting_cv).each do |png_lis
 end
 
 png_binomrank_lol = [
-  PNG_BINOMRANK_NODESTRENGTH_TLRC_C,
-  PNG_BINOMRANK_NODESTRENGTH_TLRC_C_BLUR,
-  PNG_BINOMRANK_L2NORM_TLRC_C,
-  PNG_BINOMRANK_L2NORM_TLRC_C_BLUR,
-  PNG_BINOMRANK_SELECTIONCOUNT_TLRC_C,
-  PNG_BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR,
-  PNG_BINOMRANK_STABILITY_TLRC_C,
-  PNG_BINOMRANK_STABILITY_TLRC_C_BLUR
+  PNG_BINOMRANK_MEAN_NODESTRENGTH_TLRC_C,
+  PNG_BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR,
+  PNG_BINOMRANK_MEAN_L2NORM_TLRC_C,
+  PNG_BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR,
+  PNG_BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C,
+  PNG_BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR,
+  PNG_BINOMRANK_MEAN_STABILITY_TLRC_C,
+  PNG_BINOMRANK_MEAN_STABILITY_TLRC_C_BLUR,
+  PNG_BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C,
+  PNG_BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR,
+  PNG_BINOMRANK_OVERLAP_L2NORM_TLRC_C,
+  PNG_BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR,
+  PNG_BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C,
+  PNG_BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR,
+  PNG_BINOMRANK_OVERLAP_STABILITY_TLRC_C,
+  PNG_BINOMRANK_OVERLAP_STABILITY_TLRC_C_BLUR
 ]
 binomrank_all_for_plotting = [
-  BINOMRANK_NODESTRENGTH_TLRC_C,
-  BINOMRANK_NODESTRENGTH_TLRC_C_BLUR,
-  BINOMRANK_L2NORM_TLRC_C,
-  BINOMRANK_L2NORM_TLRC_C_BLUR,
-  BINOMRANK_SELECTIONCOUNT_TLRC_C,
-  BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR,
-  BINOMRANK_STABILITY_TLRC_C,
-  BINOMRANK_STABILITY_TLRC_C_BLUR
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C,
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR,
+  BINOMRANK_MEAN_L2NORM_TLRC_C,
+  BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR,
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C,
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR,
+  BINOMRANK_MEAN_STABILITY_TLRC_C,
+  BINOMRANK_MEAN_STABILITY_TLRC_C_BLUR,
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C,
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR,
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C,
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR,
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C,
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR,
+  BINOMRANK_OVERLAP_STABILITY_TLRC_C,
+  BINOMRANK_OVERLAP_STABILITY_TLRC_C_BLUR
 ]
 png_binomrank_lol.zip(binomrank_all_for_plotting).each do |png_list, source|
   png_list.each do |target|
@@ -816,20 +932,32 @@ png_binomrank_lol.zip(binomrank_all_for_plotting).each do |png_list, source|
 end
 
 png_binomrank_lolol_cv = [
-  PNG_BINOMRANK_NODESTRENGTH_TLRC_C_CV,
-  PNG_BINOMRANK_NODESTRENGTH_TLRC_C_BLUR_CV,
-  PNG_BINOMRANK_L2NORM_TLRC_C_CV,
-  PNG_BINOMRANK_L2NORM_TLRC_C_BLUR_CV,
-  PNG_BINOMRANK_SELECTIONCOUNT_TLRC_C_CV,
-  PNG_BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR_CV
+  PNG_BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_CV,
+  PNG_BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR_CV,
+  PNG_BINOMRANK_MEAN_L2NORM_TLRC_C_CV,
+  PNG_BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR_CV,
+  PNG_BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_CV,
+  PNG_BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV,
+  PNG_BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_CV,
+  PNG_BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR_CV,
+  PNG_BINOMRANK_OVERLAP_L2NORM_TLRC_C_CV,
+  PNG_BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR_CV,
+  PNG_BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_CV,
+  PNG_BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR_CV
 ]
 binomrank_all_for_plotting_lol_cv = [
-  BINOMRANK_NODESTRENGTH_TLRC_C_CV,
-  BINOMRANK_NODESTRENGTH_TLRC_C_BLUR_CV,
-  BINOMRANK_L2NORM_TLRC_C_CV,
-  BINOMRANK_L2NORM_TLRC_C_BLUR_CV,
-  BINOMRANK_SELECTIONCOUNT_TLRC_C_CV,
-  BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR_CV
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_CV,
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR_CV,
+  BINOMRANK_MEAN_L2NORM_TLRC_C_CV,
+  BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR_CV,
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_CV,
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV,
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_CV,
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR_CV,
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C_CV,
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR_CV,
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_CV,
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR_CV
 ]
 png_binomrank_lolol_cv.zip(binomrank_all_for_plotting_lol_cv).each do |png_lol, source_list|
   png_lol.zip(source_list).each do |png_list, source|
@@ -1055,20 +1183,48 @@ avg_all.zip(afni_lol).each do |target,afni_list|
   CLOBBER.push(target.sub('.HEAD','.BRIK.gz'))
 end
 
+afni_lol = [
+  AFNI_NODESTRENGTH_TLRC_C
+]
+avg_all = [
+  OVERLAP_TLRC_C
+]
+avg_all.zip(afni_lol).each do |target,afni_list|
+  file target => afni_list do
+    afni_overlap(target, afni_list)
+  end
+  CLOBBER.push(target)
+  CLOBBER.push(target.sub('.HEAD','.BRIK'))
+  CLOBBER.push(target.sub('.HEAD','.BRIK.gz'))
+end
+
 afni_lolol_cv = [
-  AFNI_NODESTRENGTH_TLRC_C_CV,
-  AFNI_L2NORM_TLRC_C_CV,
-  AFNI_SELECTIONCOUNT_TLRC_C_CV
+  AFNI_NODESTRENGTH_TLRC_C_CV
 ]
 avg_lol_cv = [
-  MEAN_NODESTRENGTH_TLRC_C_CV,
-  MEAN_L2NORM_TLRC_C_CV,
-  MEAN_SELECTIONCOUNT_TLRC_C_CV,
+  OVERLAP_TLRC_C_CV
 ]
 avg_lol_cv.zip(afni_lolol_cv).each do |target_list,source_lol|
   target_list.zip(source_lol).each do |target,source_list|
     file target => source_list do
-      afni_mean(target, source_list)
+      afni_overlap(target, source_list)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub('.HEAD','.BRIK'))
+    CLOBBER.push(target.sub('.HEAD','.BRIK.gz'))
+  end
+end
+
+afni_lolol_cv = [
+  AFNI_NODESTRENGTH_TLRC_C_CV
+]
+avg_lol_cv = [
+  OVERLAP_TLRC_C_BLUR_CV
+]
+avg_lol_cv.zip(afni_lolol_cv).each do |target_list,source_lol|
+  target_list.zip(source_lol).each do |target,source_list|
+    file target => source_list do
+      afni_overlap(target, source_list, BLURFWHM)
     end
     CLOBBER.push(target)
     CLOBBER.push(target.sub('.HEAD','.BRIK'))
@@ -1364,14 +1520,14 @@ afni_lolol = [
   AFNI_SELECTIONCOUNT_TLRC_C_CV
 ]
 binomrank_cv = [
-  BINOMRANK_NODESTRENGTH_TLRC_C_CV,
-  BINOMRANK_L2NORM_TLRC_C_CV,
-  BINOMRANK_SELECTIONCOUNT_TLRC_C_CV
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_CV,
+  BINOMRANK_MEAN_L2NORM_TLRC_C_CV,
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_CV
 ]
 binomrank_cv.zip(afni_lolol,perm_lololol).each do |target_list,source_lol,perm_lolol|
   target_list.zip(source_lol,perm_lolol).each do |target,source_list,perm_lol|
     file target => source_list + perm_lol.flatten do
-      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC)
+      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, overlap: false)
     end
     CLOBBER.push(target)
     CLOBBER.push(target.sub(".HEAD",".BRIK"))
@@ -1390,19 +1546,167 @@ afni_lolol = [
   AFNI_SELECTIONCOUNT_TLRC_C_CV
 ]
 binomrank_cv = [
-  BINOMRANK_NODESTRENGTH_TLRC_C_BLUR_CV,
-  BINOMRANK_L2NORM_TLRC_C_BLUR_CV,
-  BINOMRANK_SELECTIONCOUNT_TLRC_C_BLUR_CV
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_CV,
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C_CV,
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_CV
 ]
 binomrank_cv.zip(afni_lolol,perm_lololol).each do |target_list,source_lol,perm_lolol|
   target_list.zip(source_lol,perm_lolol).each do |target,source_list,perm_lol|
     file target => source_list + perm_lol.flatten do
-      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, BLURFWHM)
+      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, overlap: true)
     end
     CLOBBER.push(target)
     CLOBBER.push(target.sub(".HEAD",".BRIK"))
     CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
   end
+end
+
+perm_lololol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV_BY_PERM
+]
+afni_lolol = [
+  AFNI_NODESTRENGTH_TLRC_C_CV,
+  AFNI_L2NORM_TLRC_C_CV,
+  AFNI_SELECTIONCOUNT_TLRC_C_CV
+]
+binomrank_cv = [
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR_CV,
+  BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR_CV,
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV
+]
+binomrank_cv.zip(afni_lolol,perm_lololol).each do |target_list,source_lol,perm_lolol|
+  target_list.zip(source_lol,perm_lolol).each do |target,source_list,perm_lol|
+    file target => source_list + perm_lol.flatten do
+      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, blur: BLURFWHM, overlap: false)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+perm_lololol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV_BY_PERM
+]
+afni_lolol = [
+  AFNI_NODESTRENGTH_TLRC_C_CV,
+  AFNI_L2NORM_TLRC_C_CV,
+  AFNI_SELECTIONCOUNT_TLRC_C_CV
+]
+binomrank_cv = [
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR_CV,
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR_CV,
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR_CV
+]
+binomrank_cv.zip(afni_lolol,perm_lololol).each do |target_list,source_lol,perm_lolol|
+  target_list.zip(source_lol,perm_lolol).each do |target,source_list,perm_lol|
+    file target => source_list + perm_lol.flatten do
+      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, blur: BLURFWHM, overlap: true)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+perm_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_BY_PERM
+]
+afni_lol = [
+  AFNI_NODESTRENGTH_TLRC_C,
+  AFNI_L2NORM_TLRC_C,
+  AFNI_SELECTIONCOUNT_TLRC_C
+]
+binomrank = [
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C,
+  BINOMRANK_MEAN_L2NORM_TLRC_C,
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C
+]
+binomrank.zip(afni_lol,perm_lolol).each do |target,source_list,perm_lol|
+  file target => source_list + perm_lol.flatten do
+    binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, overlap: false)
+  end
+  CLOBBER.push(target)
+  CLOBBER.push(target.sub(".HEAD",".BRIK"))
+  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+end
+
+perm_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_BY_PERM
+]
+afni_lol = [
+  AFNI_NODESTRENGTH_TLRC_C,
+  AFNI_L2NORM_TLRC_C,
+  AFNI_SELECTIONCOUNT_TLRC_C
+]
+binomrank = [
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C,
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C,
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C
+]
+binomrank.zip(afni_lol,perm_lolol).each do |target,source_list,perm_lol|
+  file target => source_list + perm_lol.flatten do
+    binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, overlap: true)
+  end
+  CLOBBER.push(target)
+  CLOBBER.push(target.sub(".HEAD",".BRIK"))
+  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+end
+
+perm_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_BY_PERM
+]
+afni_lol = [
+  AFNI_NODESTRENGTH_TLRC_C,
+  AFNI_L2NORM_TLRC_C,
+  AFNI_SELECTIONCOUNT_TLRC_C
+]
+binomrank = [
+  BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR,
+  BINOMRANK_MEAN_L2NORM_TLRC_C_BLUR,
+  BINOMRANK_MEAN_SELECTIONCOUNT_TLRC_C_BLUR
+]
+binomrank.zip(afni_lol,perm_lolol).each do |target,source_list,perm_lol|
+  file target => source_list + perm_lol.flatten do
+    binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, blur: BLURFWHM, overlap: false)
+  end
+  CLOBBER.push(target)
+  CLOBBER.push(target.sub(".HEAD",".BRIK"))
+  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+end
+
+perm_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_BY_PERM
+]
+afni_lol = [
+  AFNI_NODESTRENGTH_TLRC_C,
+  AFNI_L2NORM_TLRC_C,
+  AFNI_SELECTIONCOUNT_TLRC_C
+]
+binomrank = [
+  BINOMRANK_OVERLAP_NODESTRENGTH_TLRC_C_BLUR,
+  BINOMRANK_OVERLAP_L2NORM_TLRC_C_BLUR,
+  BINOMRANK_OVERLAP_SELECTIONCOUNT_TLRC_C_BLUR
+]
+binomrank.zip(afni_lol,perm_lolol).each do |target,source_list,perm_lol|
+  file target => source_list + perm_lol.flatten do
+    binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, blur: BLURFWHM, overlap: true)
+  end
+  CLOBBER.push(target)
+  CLOBBER.push(target.sub(".HEAD",".BRIK"))
+  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
 end
 
 rank_lolol = [
@@ -1458,6 +1762,34 @@ nonparametric_lol.zip(rank_lolol,avg_lol).each do |target_list,source_lol,avg_li
   end
 end
 
+rank_lolol = [
+  RANKI_OVERLAP_TLRC_C_CV,
+  RANKI_OVERLAP_TLRC_C_BLUR_CV,
+  RANK_OVERLAP_TLRC_C_CV,
+  RANK_OVERLAP_TLRC_C_BLUR_CV
+]
+nonparametric_lol = [
+  NONPARAMETRICI_OVERLAP_TLRC_C_CV,
+  NONPARAMETRICI_OVERLAP_TLRC_C_BLUR_CV,
+  NONPARAMETRIC_OVERLAP_TLRC_C_CV,
+  NONPARAMETRIC_OVERLAP_TLRC_C_BLUR_CV
+]
+avg_lol = [
+  OVERLAP_TLRC_C_CV,
+  OVERLAP_TLRC_C_BLUR_CV,
+  OVERLAP_TLRC_C_CV,
+  OVERLAP_TLRC_C_BLUR_CV
+]
+nonparametric_lol.zip(rank_lolol,avg_lol).each do |target_list,source_lol,avg_list|
+  target_list.zip(source_lol,avg_list).each do |target,rank_list,avg|
+    file target => rank_list+[avg] do
+      nonparametric_count_median_thresholded_ranks(target,rank_list,avg)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
 afni_all =
   AFNI_NODESTRENGTH_ORIG_O +
   AFNI_L2NORM_ORIG_O +

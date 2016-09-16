@@ -224,7 +224,7 @@ def afni_blur(target, source, blur)
   sh("3dmerge -1blur_fwhm #{blur} -prefix #{target_prefix} #{source}")
 end
 
-def binomrank_test(target, source_list, perm_lol, mask, blur=0, prob=0.5)
+def binomrank_test(target, source_list, perm_lol, mask, blur: 0, prob: 0.5, overlap: false)
   # source_list will contain a file for each subject.
   # perm_lol will contain a list of each permutation, each containing a list of
   # files for each subject.
@@ -262,9 +262,17 @@ def binomrank_test(target, source_list, perm_lol, mask, blur=0, prob=0.5)
 
     pcount_prefix_list.zip(perm_lol).each do |prefix,perm_list|
       if (blur > 0)
-        sh("3dmerge -1blur_fwhm #{blur} -gcount -prefix #{prefix} #{perm_list.join(' ')}")
+        if overlap
+          sh("3dmerge -1blur_fwhm #{blur} -gcount -prefix #{prefix} #{perm_list.join(' ')}")
+        else
+          sh("3dmerge -1blur_fwhm #{blur} -gmean -prefix #{prefix} #{perm_list.join(' ')}")
+        end
       else
-        sh("3dmerge -gcount -prefix #{prefix} #{perm_list.join(' ')}")
+        if overlap
+          sh("3dmerge -gcount -prefix #{prefix} #{perm_list.join(' ')}")
+        else
+          sh("3dmerge -gmean -prefix #{prefix} #{perm_list.join(' ')}")
+        end
       end
     end
 
@@ -278,10 +286,17 @@ def binomrank_test(target, source_list, perm_lol, mask, blur=0, prob=0.5)
 
     # Combine permutation voxel selection datasets into a single dataset
     sh("3dbucket -fbuc -prefix #{bucket_prefix} #{pcount_full_list.join(' ')}")
-    # Flag voxels in permutations where the real value at that voxel is larger.
-    sh("3dcalc -prefix #{ltreal_prefix} -a #{count_full} -b #{bucket_full} -expr 'ispositive(a-b)'")
-    # Flag voxels in permutations where the real value at that voxel is equal.
-    sh("3dcalc -prefix #{eqreal_prefix} -a #{count_full} -b #{bucket_full} -expr 'equals(a,b)'")
+    if overlap
+      # Flag voxels in permutations where the real value at that voxel is larger.
+      sh("3dcalc -prefix #{ltreal_prefix} -a #{count_full} -b #{bucket_full} -expr 'ispositive(a-b)'")
+      # Flag voxels in permutations where the real value at that voxel is equal.
+      sh("3dcalc -prefix #{eqreal_prefix} -a #{count_full} -b #{bucket_full} -expr 'equals(a,b)'")
+    else
+      # Flag voxels in permutations where the real value at that voxel is larger.
+      sh("3dcalc -prefix #{ltreal_prefix} -a #{mean_full} -b #{bucket_full} -expr 'ispositive(a-b)'")
+      # Flag voxels in permutations where the real value at that voxel is equal.
+      sh("3dcalc -prefix #{eqreal_prefix} -a #{mean_full} -b #{bucket_full} -expr 'equals(a,b)'")
+    end
     # Count the number of permutations that the real value is greater.
     sh("3dTstat -nzcount -prefix #{ltcount_prefix} #{ltreal_full}")
     # Count the number of permutations that the real value is equal (ties).
