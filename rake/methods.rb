@@ -224,7 +224,7 @@ def afni_blur(target, source, blur)
   sh("3dmerge -1blur_fwhm #{blur} -prefix #{target_prefix} #{source}")
 end
 
-def binomrank_test(target, source_list, perm_lol, mask, blur: 0, prob: 0.5, overlap: false)
+def binomrank_test(target, source_list, perm_lol, mask, blur: 0, prob: 0.5, overlap: false, scale: false)
   # source_list will contain a file for each subject.
   # perm_lol will contain a list of each permutation, each containing a list of
   # files for each subject.
@@ -237,12 +237,27 @@ def binomrank_test(target, source_list, perm_lol, mask, blur: 0, prob: 0.5, over
   Dir.mktmpdir do |dir|
     pcount_full_list = (1..perm_lol.size).collect {|i| File.join(dir,["pcount_#{i}",target_ext].join('+'))}
     pcount_prefix_list = (1..perm_lol.size).collect {|i| File.join(dir,"pcount_#{i}")}
+    pmax_full = File.join(dir,['pmax',target_ext].join('+'))
+    pmax_prefix = File.join(dir,'pmax')
+    nzcount_full = File.join(dir,['nzcount',target_ext].join('+'))
+    nzcount_prefix = File.join(dir,'nzcount')
+    dump_mask_full = File.join(dir,['dump_mask',target_ext].join('+'))
+    dump_mask_prefix = File.join(dir,'dump_mask')
+    permdump = File.join(dir,'permdump.txt')
+    meandump = File.join(dir,'meandump.txt')
+    statdump = File.join(dir,'statdump.txt')
+    parametric_pvals_full = File.join(dir,['parametric_pvals',target_ext].join('+'))
+    parametric_pvals_prefix = File.join(dir,'parametric_pvals')
+    parametric_pvals_filled_full = File.join(dir,['parametric_pvals_filled',target_ext].join('+'))
+    parametric_pvals_filled_prefix = File.join(dir,'parametric_pvals_filled')
     thresh_full = File.join(dir,['thresh',target_ext].join('+'))
     thresh_prefix = File.join(dir,'thresh')
     mean_full = File.join(dir,['mean',target_ext].join('+'))
     mean_prefix = File.join(dir,'mean')
     mean_masked_full = File.join(dir,['mean_masked',target_ext].join('+'))
     mean_masked_prefix = File.join(dir,'mean_masked')
+    mean_scaled_full = File.join(dir,['mean_scaled',target_ext].join('+'))
+    mean_scaled_prefix = File.join(dir,'mean_scaled')
     count_full = File.join(dir,["count",target_ext].join('+'))
     count_prefix = File.join(dir,"count")
     bucket_full = File.join(dir,["bucket",target_ext].join('+'))
@@ -285,7 +300,14 @@ def binomrank_test(target, source_list, perm_lol, mask, blur: 0, prob: 0.5, over
     end
 
     # Combine permutation voxel selection datasets into a single dataset
+    # N.B. the variable pcount_full_list is used regardless of whether we are
+    # considering magnitudes or counts... which is confusing, but that's how it
+    # is for now. So do not worry that this only corresponds to counts. It may
+    # correspond to magnitudes if overlap: false.
     sh("3dbucket -fbuc -prefix #{bucket_prefix} #{pcount_full_list.join(' ')}")
+    sh("3dmerge -gsmax -prefix #{pmax_prefix} #{pcount_full_list.join(' ')}")
+    sh("3dmerge -gcount -prefix #{nzcount_prefix} #{pcount_full_list.join(' ')}")
+
     if overlap
       # Flag voxels in permutations where the real value at that voxel is larger.
       sh("3dcalc -prefix #{ltreal_prefix} -a #{count_full} -b #{bucket_full} -expr 'ispositive(a-b)'")
@@ -305,15 +327,37 @@ def binomrank_test(target, source_list, perm_lol, mask, blur: 0, prob: 0.5, over
     # number of ties with the real value)
     sh("3dcalc -prefix #{thresh_prefix} -a #{ltcount_full} -b #{eqcount_full} -c #{mask} -expr '(a+(b/2))*step(c)'")
     sh("3dcalc -prefix #{mean_masked_prefix} -a #{mean_full} -b #{mask} -expr 'a*step(b)'")
-    sh("3dbucket -fbuc -prefix #{target_prefix} #{mean_masked_full} #{thresh_full}")
-    # Compute binomial p-value
-#    sh("3dcalc -t #{rank_full} -expr 'fibn_t2p(t,#{nsubj},#{prob})' -prefix #{binom_pval_prefix}")
-#    # Concatenate the rank and the p-value.
-#    sh("3dbucket -fbuc -prefix #{target_prefix} #{rank_full} #{binom_pval_full}")
-    # Compute binomial p-value
-    sh("3drefit -fibn -statpar #{nperm} #{prob} #{target}")
-    # Add FDR curves
-    sh("3drefit -addFDR #{target}")
+
+    # dumps for matlab
+    dump_min_nnz = 30
+    dump_thresh = 99.9
+    sh("3dcalc -a #{nzcount_full} -b #{thresh_full} -expr 'ispositive(a-#{dump_min_nnz}) * ispositive(b-#{dump_thresh})' -prefix #{dump_mask_prefix}")
+    sh("3dmaskdump -mask #{dump_mask_full} -o #{permdump} #{bucket_full}")
+    sh("3dmaskdump -mask #{dump_mask_full} -o #{meandump} #{mean_masked_full}")
+    if overlap
+      # Fit a poisson when possible
+      #sh("matlab -nojvm -r \"poissonfit('#{permdump}','#{meandump}','#{statdump}');exit\"")
+    else
+      # Fit a gamma when possible
+      sh("gammafit.R #{permdump} #{meandump} #{statdump}")
+      #sh("matlab -nojvm -r \"gammafit('#{permdump}','#{meandump}','#{statdump}');exit\"")
+    end
+    sh("3dUndump -master #{mean_masked_full} -ijk -datum float -prefix #{parametric_pvals_prefix} #{statdump}")
+    sh("3dcalc -prefix #{parametric_pvals_filled_prefix} -a #{parametric_pvals_full} -b #{thresh_full} -expr 'ifelse(not(a)*step(b),-(101-b)/100,a)'")
+    if scale
+      sh("3dcalc -prefix #{mean_scaled_prefix} -a #{mean_masked_full} -b #{pmax_full} -expr 'a-(b*notzero(a))'")
+      sh("3dbucket -fbuc -prefix #{target_prefix} #{mean_scaled_full} #{thresh_full} #{parametric_pvals_filled_full}")
+    else
+      sh("3dbucket -fbuc -prefix #{target_prefix} #{mean_masked_full} #{thresh_full} #{parametric_pvals_filled_full}")
+    end
+    FileUtils.mv(statdump,'.')
+    FileUtils.mv("#{dir}/statdump.params.txt",'.')
+    FileUtils.mv(permdump,'.')
+    FileUtils.mv(meandump,'.')
+#    # Compute binomial p-value
+#    sh("3drefit -fibn -statpar #{nperm} #{prob} #{target}")
+#    # Add FDR curves
+#    sh("3drefit -addFDR #{target}")
   end
 end
 

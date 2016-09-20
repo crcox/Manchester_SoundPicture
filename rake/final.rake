@@ -306,6 +306,22 @@ NONPARAMETRICI_SELECTIONCOUNT_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATIO
 NONPARAMETRICI_OVERLAP_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_overlap_#{i}_C+tlrc.HEAD"})
 NONPARAMETRICI_OVERLAP_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "nonparametrici_overlap_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
 
+BINOMRANK_SCALEDMEAN_NODESTRENGTH_TLRC_C = "binomrank_scaledmean_nodestrength_C+tlrc.HEAD"
+BINOMRANK_SCALEDMEAN_NODESTRENGTH_TLRC_C_BLUR = "binomrank_scaledmean_nodestrength.b#{BLURFWHM}_C+tlrc.HEAD"
+BINOMRANK_SCALEDMEAN_L2NORM_TLRC_C = "binomrank_scaledmean_l2norm_C+tlrc.HEAD"
+BINOMRANK_SCALEDMEAN_L2NORM_TLRC_C_BLUR = "binomrank_scaledmean_l2norm.b#{BLURFWHM}_C+tlrc.HEAD"
+BINOMRANK_SCALEDMEAN_SELECTIONCOUNT_TLRC_C = "binomrank_scaledmean_selectioncount_C+tlrc.HEAD"
+BINOMRANK_SCALEDMEAN_SELECTIONCOUNT_TLRC_C_BLUR = "binomrank_scaledmean_selectioncount.b#{BLURFWHM}_C+tlrc.HEAD"
+BINOMRANK_SCALEDMEAN_STABILITY_TLRC_C = "binomrank_scaledmean_stability_C+tlrc.HEAD"
+BINOMRANK_SCALEDMEAN_STABILITY_TLRC_C_BLUR = "binomrank_scaledmean_stability.b#{BLURFWHM}_C+tlrc.HEAD"
+
+BINOMRANK_SCALEDMEAN_NODESTRENGTH_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_scaledmean_nodestrength_#{i}_C+tlrc.HEAD"})
+BINOMRANK_SCALEDMEAN_NODESTRENGTH_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_scaledmean_nodestrength_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+BINOMRANK_SCALEDMEAN_L2NORM_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_scaledmean_l2norm_#{i}_C+tlrc.HEAD"})
+BINOMRANK_SCALEDMEAN_L2NORM_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_scaledmean_l2norm_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+BINOMRANK_SCALEDMEAN_SELECTIONCOUNT_TLRC_C_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_scaledmean_selectioncount_#{i}_C+tlrc.HEAD"})
+BINOMRANK_SCALEDMEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV = Rake::FileList.new(CROSSVALIDATION_INDEX.collect {|i| "binomrank_scaledmean_selectioncount_#{i}.b#{BLURFWHM}_C+tlrc.HEAD"})
+
 BINOMRANK_MEAN_NODESTRENGTH_TLRC_C = "binomrank_mean_nodestrength_C+tlrc.HEAD"
 BINOMRANK_MEAN_NODESTRENGTH_TLRC_C_BLUR = "binomrank_mean_nodestrength.b#{BLURFWHM}_C+tlrc.HEAD"
 BINOMRANK_MEAN_L2NORM_TLRC_C = "binomrank_mean_l2norm_C+tlrc.HEAD"
@@ -1509,6 +1525,108 @@ nonparametric_all.zip(rank_lol,avg_all).each do |target,rank_list,avg|
   CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
 end
 
+# SCALED MEAN
+perm_lololol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV_BY_PERM
+]
+afni_lolol = [
+  AFNI_NODESTRENGTH_TLRC_C_CV,
+  AFNI_L2NORM_TLRC_C_CV,
+  AFNI_SELECTIONCOUNT_TLRC_C_CV
+]
+binomrank_cv = [
+  BINOMRANK_SCALEDMEAN_NODESTRENGTH_TLRC_C_CV,
+  BINOMRANK_SCALEDMEAN_L2NORM_TLRC_C_CV,
+  BINOMRANK_SCALEDMEAN_SELECTIONCOUNT_TLRC_C_CV
+]
+binomrank_cv.zip(afni_lolol,perm_lololol).each do |target_list,source_lol,perm_lolol|
+  target_list.zip(source_lol,perm_lolol).each do |target,source_list,perm_lol|
+    file target => source_list + perm_lol.flatten do
+      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, overlap: false, scale: true)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+perm_lololol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_CV_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_CV_BY_PERM
+]
+afni_lolol = [
+  AFNI_NODESTRENGTH_TLRC_C_CV,
+  AFNI_L2NORM_TLRC_C_CV,
+  AFNI_SELECTIONCOUNT_TLRC_C_CV
+]
+binomrank_cv = [
+  BINOMRANK_SCALEDMEAN_NODESTRENGTH_TLRC_C_BLUR_CV,
+  BINOMRANK_SCALEDMEAN_L2NORM_TLRC_C_BLUR_CV,
+  BINOMRANK_SCALEDMEAN_SELECTIONCOUNT_TLRC_C_BLUR_CV
+]
+binomrank_cv.zip(afni_lolol,perm_lololol).each do |target_list,source_lol,perm_lolol|
+  target_list.zip(source_lol,perm_lolol).each do |target,source_list,perm_lol|
+    file target => source_list + perm_lol.flatten do
+      binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, blur: BLURFWHM, overlap: false, scale: true)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+perm_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_BY_PERM
+]
+afni_lol = [
+  AFNI_NODESTRENGTH_TLRC_C,
+  AFNI_L2NORM_TLRC_C,
+  AFNI_SELECTIONCOUNT_TLRC_C
+]
+binomrank = [
+  BINOMRANK_SCALEDMEAN_NODESTRENGTH_TLRC_C,
+  BINOMRANK_SCALEDMEAN_L2NORM_TLRC_C,
+  BINOMRANK_SCALEDMEAN_SELECTIONCOUNT_TLRC_C
+]
+binomrank.zip(afni_lol,perm_lolol).each do |target,source_list,perm_lol|
+  file target => source_list + perm_lol.flatten do
+    binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, overlap: false, scale: true)
+  end
+  CLOBBER.push(target)
+  CLOBBER.push(target.sub(".HEAD",".BRIK"))
+  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+end
+
+perm_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC_C_BY_PERM,
+  PERMUTATIONS_L2NORM_TLRC_C_BY_PERM,
+  PERMUTATIONS_SELECTIONCOUNT_TLRC_C_BY_PERM
+]
+afni_lol = [
+  AFNI_NODESTRENGTH_TLRC_C,
+  AFNI_L2NORM_TLRC_C,
+  AFNI_SELECTIONCOUNT_TLRC_C
+]
+binomrank = [
+  BINOMRANK_SCALEDMEAN_NODESTRENGTH_TLRC_C_BLUR,
+  BINOMRANK_SCALEDMEAN_L2NORM_TLRC_C_BLUR,
+  BINOMRANK_SCALEDMEAN_SELECTIONCOUNT_TLRC_C_BLUR
+]
+binomrank.zip(afni_lol,perm_lolol).each do |target,source_list,perm_lol|
+  file target => source_list + perm_lol.flatten do
+    binomrank_test(target, source_list, perm_lol, SHARED_ATLAS_TLRC, blur: BLURFWHM, overlap: false, scale: true)
+  end
+  CLOBBER.push(target)
+  CLOBBER.push(target.sub(".HEAD",".BRIK"))
+  CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+end
+
+# UNSCALED MEAN
 perm_lololol = [
   PERMUTATIONS_NODESTRENGTH_TLRC_C_CV_BY_PERM,
   PERMUTATIONS_L2NORM_TLRC_C_CV_BY_PERM,
