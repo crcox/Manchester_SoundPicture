@@ -11,6 +11,32 @@ SUBJKEY = '.subject.key'
 SEEDKEY = '.RandomSeed.key'
 CVKEY = '.cvholdout.key'
 
+LINENO = ENV.fetch('LINENO',nil)
+FUNC = ENV.fetch('FUNC', "wbrsa_dumpcoords")
+def run_matlab(func,args,resultfiles,debug: nil)
+  rlist = Tempfile.new('rlist')
+  matlab="matlab -nojvm -r"
+  if debug.eql?('error') then
+    debugcmd = "dbstop if error"
+  elsif debug.is_a? Numeric
+    debugcmd = "dbstop #{func} #{debug}"
+  elsif debug.nil?
+    debugcmd = nil
+  else
+    debugcmd = nil
+  end
+  args = [%{'#{rlist.path}'},args].join(',')
+  path = "#{ENV['HOME']}/src/Manchester_SoundPicture/rake"
+  addpath = %{addpath('#{path}')}
+  begin
+    File.open(rlist, 'w') {|f| f.write resultfiles.join("\n")}
+    sh(%{#{matlab} "#{addpath};#{debugcmd};#{func}(#{args});exit;"})
+  ensure
+    rlist.close
+    rlist.unlink
+  end
+end
+
 file COLFILTERKEY => PARAMFILES do
   target = COLFILTERKEY
   source_list = PARAMFILES
@@ -85,67 +111,62 @@ file SEEDKEY => PARAMFILES do
   end
 end
 
-LINENO=270
-MATLAB="matlab -nojvm -r"
-FUNC="wbrsa_dumpcoords"
-DEBUG="dbstop #{FUNC} #{LINENO}"
 namespace :dump do
   namespace :nodestrength do
     task :cv=> [SUBJKEY,CVKEY] do
-      rlist = Tempfile.new('rlist')
-      begin
-        File.open(rlist, 'w') {|f| f.write RESULTFILES.join("\n")}
-        sh("matlab -nojvm -r \"wbrsa_dumpcoords('#{rlist.path}','nodestrength','orig','metadatafile','#{METADATA}');exit;\"")
-      ensure
-        rlist.close
-        rlist.unlink
-      end
+      pargs=%W{'nodestrength' 'orig'}
+      kwargs=%W{
+        'metadatafile' '#{METADATA}'
+      }
+      args=(pargs+kwargs).join(',')
+      run_matlab(FUNC,args,RESULTFILES,debug: LINENO)
     end
+
     namespace :avg do
       task :final=> [SUBJKEY,CVKEY,COLFILTERKEY] do
-        rlist = Tempfile.new('rlist')
-        begin
-          File.open(rlist, 'w') {|f| f.write RESULTFILES.join("\n")}
-          sh("matlab -nojvm -r \"wbrsa_dumpcoords('#{rlist.path}','nodestrength','orig','by',{'subject'},'metadatafile','#{METADATA}');exit;\"")
-        ensure
-          rlist.close
-          rlist.unlink
-        end
+        pargs=%W{'nodestrength' 'orig'}
+        kwargs=%W{
+          'metadatafile' '#{METADATA}'
+          'by' {'subject'}
+        }
+        args=(pargs+kwargs).join(',')
+        run_matlab(FUNC,args,RESULTFILES,debug: LINENO)
       end
+
       task :permtest=> [SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
-        rlist = Tempfile.new('rlist')
-        begin
-          File.open(rlist, 'w') {|f| f.write RESULTFILES.join("\n")}
-          sh("matlab -nojvm -r \"wbrsa_dumpcoords('#{rlist.path}','nodestrength','orig','by',{'RandomSeed','subject'},'metadatafile','#{METADATA}');exit;\"")
-        ensure
-          rlist.close
-          rlist.unlink
-        end
+        pargs=%W{'nodestrength' 'orig'}
+        kwargs=%W{
+          'metadatafile' '#{METADATA}'
+          'by' {'RandomSeed','subject'}
+        }
+        args=(pargs+kwargs).join(',')
+        run_matlab(FUNC,args,RESULTFILES,debug: LINENO)
       end
+
     end
   end
   namespace :stability do
     namespace :avg do
       task :final=> [SUBJKEY,CVKEY,COLFILTERKEY] do
-        rlist = Tempfile.new('rlist')
-        begin
-          File.open(rlist, 'w') {|f| f.write RESULTFILES.join("\n")}
-          sh("matlab -nojvm -r \"wbrsa_dumpcoords('#{rlist.path}','stability','orig','by',{'subject'},'metadatafile','#{METADATA}');exit;\"")
-        ensure
-          rlist.close
-          rlist.unlink
-        end
+        pargs=%W{'nodestrength' 'orig'}
+        kwargs=%W{
+          'metadatafile' '#{METADATA}'
+          'by' {'subject'}
+        }
+        args=(pargs+kwargs).join(',')
+        run_matlab(FUNC,args,RESULTFILES,debug: LINENO)
       end
+
       task :permtest=> [SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
-        rlist = Tempfile.new('rlist')
-        begin
-          File.open(rlist, 'w') {|f| f.write RESULTFILES.join("\n")}
-          sh("matlab -nojvm -r \"wbrsa_dumpcoords('#{rlist.path}','stability','orig','by',{'RandomSeed','subject'},'metadatafile','#{METADATA}');exit;\"")
-        ensure
-          rlist.close
-          rlist.unlink
-        end
+        pargs=%W{'nodestrength' 'orig'}
+        kwargs=%W{
+          'metadatafile' '#{METADATA}'
+          'by' {'RandomSeed','subject'}
+        }
+        args=(pargs+kwargs).join(',')
+        run_matlab(FUNC,args,RESULTFILES,debug: LINENO)
       end
+
     end
   end
 end
