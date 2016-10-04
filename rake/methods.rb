@@ -93,16 +93,22 @@ def png_nonparametric(target, source)
   prefix = target.sub('.png','')
   funcfile = source
 
-  if (!(spath.eql? '.')) then
-    sh("3dcopy #{source} #{funcfile}")
-  end
+#  if (!(spath.eql? '.')) then
+#    sh("3dcopy #{source} #{funcfile}")
+#  end
 
   if target.include? "p05" then
-    threshold = '16 *'
+    threshold="0.05 *p"
   elsif target.include? "p01" then
-    threshold = '18 *'
+    threshold="0.01 *p"
   elsif target.include? "p001" then
-    threshold = '20 *'
+    threshold="0.001 *p"
+  elsif target.include? "q05" then
+    threshold="0.05 *q"
+  elsif target.include? "q01" then
+    threshold="0.01 *q"
+  elsif target.include? "q001" then
+    threshold="0.001 *q"
   end
 
   sign = '+'
@@ -114,11 +120,11 @@ def png_nonparametric(target, source)
     compose_montage_figure(tmpdir, prefix)
   end
 
-  if (!(spath.eql? '.')) then
-    rm_f(funcfile)
-    rm_f(funcfile.sub(".HEAD",".BRIK"))
-    rm_f(funcfile.sub(".HEAD",".BRIK.gz"))
-  end
+#  if (!(spath.eql? '.')) then
+#    rm_f(funcfile)
+#    rm_f(funcfile.sub(".HEAD",".BRIK"))
+#    rm_f(funcfile.sub(".HEAD",".BRIK.gz"))
+#  end
 end
 
 def afni_start(surfvol,spec)
@@ -375,6 +381,7 @@ def nonparametric_rank_against_permutation_distribution(target, source, perm_lis
     gtcount_prefix = File.join(dir,['gtcount',target_prefix_b].join('_'))
     gtcount_full = [gtcount_prefix,target_ext].join('+')
     gtperm_list = []
+    bperm_list = perm_list.collect {|x| File.join(dir,'b'+File.basename(x))}
 
     if blur > 0 then
       bsource_prefix = File.join(dir,['b',source_prefix_b].join('_'))
@@ -384,6 +391,24 @@ def nonparametric_rank_against_permutation_distribution(target, source, perm_lis
 
     perm_list.each do |permutation|
       perm_prefix_b, perm_ext = File.basename(permutation).split('+')
+      # # THIS PROBABLY IS NOT A DIRECTION I WANT TO GO IN...
+      # if (perm_ext.includes?('orig') and target_ext.includes?('tlrc')) then
+      #   ctperm_prefix = File.join(dir,'ct'+perm_prefix_b)
+      #   ctperm_full = [ctperm_prefix,perm_ext].join('+')
+      #   if perm_prefix_b.last(2).eql?('_O') then
+      #     ooperm_full = premutation
+      #     coperm_prefix = File.join(dir,'co'+perm_prefix_b)
+      #     coperm_full = [coperm_prefix,perm_ext].join('+')
+      #     afni_deoblique(coperm_full, ooperm_full)
+      #     afni_adwarp(source, reference, voxdim=3)
+      #   end
+      #   if perm_prefix_b.last(2).eql?('_C') then
+      #     coperm_full = permutation
+      #     afni_adwarp(source, reference, voxdim=3)
+      #   end
+      #   ctperm_prefix = File.join(dir,'ct'+perm_prefix_b)
+      #   ctperm_full = [ctperm_prefix,perm_ext].join('+')
+      # end
       gtperm_prefix = File.join(dir,'gt'+perm_prefix_b)
       gtperm_full = [gtperm_prefix,perm_ext].join('+')
 
@@ -395,17 +420,28 @@ def nonparametric_rank_against_permutation_distribution(target, source, perm_lis
       else
         sh("3dcalc -a #{source} -b #{permutation} -expr 'step(a-b)' -prefix #{gtperm_prefix}")
       end
-
       gtperm_list.push(gtperm_full)
     end
-    sh("3dmerge -gcount -prefix #{nzcount_prefix} #{perm_list.join(' ')}")
+    if blur > 0 then
+      sh("3dmerge -gcount -prefix #{nzcount_prefix} #{bperm_list.join(' ')}")
+    else
+      sh("3dmerge -gcount -prefix #{nzcount_prefix} #{perm_list.join(' ')}")
+    end
     sh("3dmerge -gcount -prefix #{gtcount_prefix} #{gtperm_list.join(' ')}")
-    expression = "'ifelse(iszero(d),((step(b)*100)-b)/2,ifelse(ispositive(d),a,step(a+b)*50))'"
-    sh("3dcalc -a #{gtcount_full} -b #{nzcount_full} -c #{mask} -d #{source} -prefix #{target_prefix} -expr #{expression}")
+
+    # expression = "'ifelse(iszero(c),((step(b)*100)-b)/2,ifelse(ispositive(c),a,step(a+b)*50))'"
+    # sh("3dcalc -a #{gtcount_full} -b #{nzcount_full} -c #{source} -prefix #{target_prefix} -expr #{expression}")
+    #
+    expression = "'ifelse(and(iszero(d),c),(100-b)/2,ifelse(and(ispositive(d),c),a,50))'"
+    if blur > 0 then
+      sh("3dcalc -a #{gtcount_full} -b #{nzcount_full} -c #{mask} -d #{bsource_full} -prefix #{target_prefix} -expr #{expression}")
+    else
+      sh("3dcalc -a #{gtcount_full} -b #{nzcount_full} -c #{mask} -d #{source} -prefix #{target_prefix} -expr #{expression}")
+    end
   end
 end
 
-def nonparametric_count_median_thresholded_ranks(target,rank_list,intensitymap='')
+def nonparametric_count_median_thresholded_ranks(target,rank_list,intensitymap='', medianrank: 50, prob: 0.5)
   # This function takes the rank values for each subject, thresholds them at
   # the median rank (50), and then counts the number of subjects that survive
   # thresholding at each voxel. These counts are intended to be used as a
@@ -413,7 +449,7 @@ def nonparametric_count_median_thresholded_ranks(target,rank_list,intensitymap='
   # combined with it to create a new intensity+threshold dataset.
   target_prefix, target_ext = target.split('+')
   target_prefix_b  = File.basename(target_prefix)
-  medianrank = rank_list.size / 2
+  nsubj = rank_list.size
   Dir.mktmpdir do |dir|
     rankcount_prefix = File.join(dir,['rankcount',target_prefix_b].join('_'))
     rankcount_full = [rankcount_prefix,target_ext].join('+')
@@ -424,6 +460,10 @@ def nonparametric_count_median_thresholded_ranks(target,rank_list,intensitymap='
     else
       sh("3dbucket -fbuc -prefix #{target_prefix} #{rankcount_full}")
     end
+    # Compute binomial p-value
+    sh("3drefit -fibn -statpar #{nsubj} #{prob} #{target}")
+    # Add FDR curves
+    sh("3drefit -addFDR #{target}")
   end
 end
 

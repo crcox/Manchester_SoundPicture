@@ -11,8 +11,8 @@ SUBJKEY = '.subject.key'
 SEEDKEY = '.RandomSeed.key'
 CVKEY = '.cvholdout.key'
 
-LINENO = ENV.fetch('LINENO',nil)
-FUNC = ENV.fetch('FUNC', "wbrsa_dumpcoords")
+LINENO = ENV['DBLINENO'].to_i || nil
+FUNC = ENV['FUNC'] || "wbrsa_dumpcoords"
 def run_matlab(func,args,resultfiles,debug: nil)
   rlist = Tempfile.new('rlist')
   matlab="matlab -nojvm -r"
@@ -148,7 +148,7 @@ namespace :dump do
   namespace :stability do
     namespace :avg do
       task :final=> [SUBJKEY,CVKEY,COLFILTERKEY] do
-        pargs=%W{'nodestrength' 'orig'}
+        pargs=%W{'stability' 'orig'}
         kwargs=%W{
           'metadatafile' '#{METADATA}'
           'by' {'subject'}
@@ -158,7 +158,7 @@ namespace :dump do
       end
 
       task :permtest=> [SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
-        pargs=%W{'nodestrength' 'orig'}
+        pargs=%W{'stability' 'orig'}
         kwargs=%W{
           'metadatafile' '#{METADATA}'
           'by' {'RandomSeed','subject'}

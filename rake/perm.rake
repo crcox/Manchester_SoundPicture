@@ -110,6 +110,9 @@ TXT_L2NORM_ORIG_O = Rake::FileList["txt/l2norm/???_??.orig"]
 TXT_SELECTIONCOUNT_ORIG_O = Rake::FileList["txt/selectioncount/???_??.orig"]
 TXT_STABILITY_ORIG_O = Rake::FileList["txt/stability/???_??.orig"]
 
+TXT_NODESTRENGTH_TLRC = Rake::FileList["txt/nodestrength/???_??.mni"]
+TXT_STABILITY_TLRC = Rake::FileList["txt/stability/???_??.mni"]
+
 filelist = Rake::FileList["txt/nodestrength/cv/???_??_??.orig"]
 TXT_NODESTRENGTH_ORIG_O_CV = CROSSVALIDATION_INDEX.collect {|c|
   filelist.grep(/[0-9]+_[0-9]+_#{c}/)
@@ -146,6 +149,10 @@ AFNI_SELECTIONCOUNT_ORIG_O = TXT_SELECTIONCOUNT_ORIG_O.pathmap("afni/selectionco
 AFNI_SELECTIONCOUNT_ORIG_C = TXT_SELECTIONCOUNT_ORIG_O.pathmap("afni/selectioncount/%n_C+orig.HEAD")
 AFNI_SELECTIONCOUNT_TLRC_C = TXT_SELECTIONCOUNT_ORIG_O.pathmap("afni/selectioncount/%n_C+tlrc.HEAD")
 
+AFNI_NODESTRENGTH_TLRC_RAW = TXT_NODESTRENGTH_TLRC.pathmap("afni/nodestrength/%n_raw+tlrc.HEAD")
+AFNI_NODESTRENGTH_TLRC = TXT_NODESTRENGTH_TLRC.pathmap("afni/nodestrength/%n+tlrc.HEAD")
+AFNI_STABILITY_TLRC = TXT_STABILITY_TLRC.pathmap("afni/stability/%n+tlrc.HEAD")
+
 AFNI_NODESTRENGTH_ORIG_O_RAW_CV = TXT_NODESTRENGTH_ORIG_O_CV.collect {|c| c.pathmap("afni/nodestrength/cv/%n_O_raw+orig.HEAD")}
 AFNI_NODESTRENGTH_ORIG_O_CV = TXT_NODESTRENGTH_ORIG_O_CV.collect {|c| c.pathmap("afni/nodestrength/cv/%n_O+orig.HEAD")}
 AFNI_NODESTRENGTH_ORIG_C_CV = TXT_NODESTRENGTH_ORIG_O_CV.collect {|c| c.pathmap("afni/nodestrength/cv/%n_C+orig.HEAD")}
@@ -177,6 +184,11 @@ SUBJMEAN_STABILITY_ORIG_O = SUBJECT_INDEX.collect {|s| "mean/stability/#{s}_O+or
 SUBJMEAN_STABILITY_ORIG_C = SUBJECT_INDEX.collect {|s| "mean/stability/#{s}_C+orig.HEAD"}
 SUBJMEAN_STABILITY_TLRC_C = SUBJECT_INDEX.collect {|s| "mean/stability/#{s}_C+tlrc.HEAD"}
 SUBJMEAN_STABILITY_TLRC_C_BLUR = SUBJECT_INDEX.collect {|s| "mean/stability/#{s}.b#{BLURFWHM}_C+tlrc.HEAD"}
+
+SUBJMEAN_STABILITY_TLRC = SUBJECT_INDEX.collect {|s| "mean/stability/#{s}+tlrc.HEAD"}
+SUBJMEAN_STABILITY_TLRC_BLUR = SUBJECT_INDEX.collect {|s| "mean/stability/#{s}.b#{BLURFWHM}+tlrc.HEAD"}
+SUBJMEAN_NODESTRENGTH_TLRC = SUBJECT_INDEX.collect {|s| "mean/nodestrength/#{s}+tlrc.HEAD"}
+SUBJMEAN_NODESTRENGTH_TLRC_BLUR = SUBJECT_INDEX.collect {|s| "mean/nodestrength/#{s}.b#{BLURFWHM}+tlrc.HEAD"}
 
 SUBJMEAN_NODESTRENGTH_ORIG_O_CV = CROSSVALIDATION_INDEX.collect {|c| SUBJECT_INDEX.collect {|s| "mean/nodestrength/cv/#{s}_#{c}_O+orig.HEAD"}}
 SUBJMEAN_NODESTRENGTH_ORIG_C_CV = CROSSVALIDATION_INDEX.collect {|c| SUBJECT_INDEX.collect {|s| "mean/nodestrength/cv/#{s}_#{c}_C+orig.HEAD"}}
@@ -212,6 +224,11 @@ SUBJSD_STABILITY_ORIG_C = SUBJECT_INDEX.collect {|s| "sd/stability/#{s}_C+orig.H
 SUBJSD_STABILITY_TLRC_C = SUBJECT_INDEX.collect {|s| "sd/stability/#{s}_C+tlrc.HEAD"}
 SUBJSD_STABILITY_TLRC_C_BLUR = SUBJECT_INDEX.collect {|s| "sd/stability/#{s}.b#{BLURFWHM}_C+tlrc.HEAD"}
 
+SUBJSD_STABILITY_TLRC = SUBJECT_INDEX.collect {|s| "sd/stability/#{s}+tlrc.HEAD"}
+SUBJSD_STABILITY_TLRC_BLUR = SUBJECT_INDEX.collect {|s| "sd/stability/#{s}.b#{BLURFWHM}+tlrc.HEAD"}
+SUBJSD_NODESTRENGTH_TLRC = SUBJECT_INDEX.collect {|s| "sd/nodestrength/#{s}+tlrc.HEAD"}
+SUBJSD_NODESTRENGTH_TLRC_BLUR = SUBJECT_INDEX.collect {|s| "sd/nodestrength/#{s}.b#{BLURFWHM}+tlrc.HEAD"}
+
 SUBJSD_NODESTRENGTH_ORIG_O_CV = CROSSVALIDATION_INDEX.collect {|c| SUBJECT_INDEX.collect {|s| "sd/nodestrength/cv/#{s}_#{c}_O+orig.HEAD"}}
 SUBJSD_NODESTRENGTH_ORIG_C_CV = CROSSVALIDATION_INDEX.collect {|c| SUBJECT_INDEX.collect {|s| "sd/nodestrength/cv/#{s}_#{c}_C+orig.HEAD"}}
 SUBJSD_NODESTRENGTH_TLRC_C_CV = CROSSVALIDATION_INDEX.collect {|c| SUBJECT_INDEX.collect {|s| "sd/nodestrength/cv/#{s}_#{c}_C+tlrc.HEAD"}}
@@ -234,6 +251,9 @@ GROUPMEAN_L2NORM_TLRC_C = "mean/l2norm/group_C+tlrc.HEAD"
 GROUPMEAN_SELECTIONCOUNT_TLRC_C = "mean/selectioncount/group_C+tlrc.HEAD"
 GROUPMEAN_STABILITY_TLRC_C = "mean/stability/group_C+tlrc.HEAD"
 
+GROUPMEAN_NODESTRENGTH_TLRC = "mean/nodestrength/group+tlrc.HEAD"
+GROUPMEAN_STABILITY_TLRC = "mean/stability/group+tlrc.HEAD"
+
 GROUPMEAN_NODESTRENGTH_TLRC_C_CV = CROSSVALIDATION_INDEX.collect {|c| "mean/nodestrength/cv/group_#{c}_C+tlrc.HEAD"}
 GROUPMEAN_L2NORM_TLRC_C_CV = CROSSVALIDATION_INDEX.collect {|c| "mean/l2norm/cv/group_#{c}_C+tlrc.HEAD"}
 GROUPMEAN_SELECTIONCOUNT_TLRC_C_CV = CROSSVALIDATION_INDEX.collect {|c| "mean/selectioncount/cv/group_#{c}_C+tlrc.HEAD"}
@@ -243,6 +263,9 @@ GROUPSD_NODESTRENGTH_TLRC_C = "sd/nodestrength/group_C+tlrc.HEAD"
 GROUPSD_L2NORM_TLRC_C = "sd/l2norm/group_C+tlrc.HEAD"
 GROUPSD_SELECTIONCOUNT_TLRC_C = "sd/selectioncount/group_C+tlrc.HEAD"
 GROUPSD_STABILITY_TLRC_C = "sd/stability/group_C+tlrc.HEAD"
+
+GROUPSD_NODESTRENGTH_TLRC = "sd/nodestrength/group+tlrc.HEAD"
+GROUPSD_STABILITY_TLRC = "sd/stability/group+tlrc.HEAD"
 
 GROUPSD_NODESTRENGTH_TLRC_C_CV = CROSSVALIDATION_INDEX.collect {|c| "sd/nodestrength/cv/group_#{c}_C+tlrc.HEAD"}
 GROUPSD_L2NORM_TLRC_C_CV = CROSSVALIDATION_INDEX.collect {|c| "sd/l2norm/cv/group_#{c}_C+tlrc.HEAD"}
@@ -254,6 +277,7 @@ GROUPSD_STABILITY_TLRC_C_CV = CROSSVALIDATION_INDEX.collect {|c| "sd/stability/c
 PERMUTATIONS_NODESTRENGTH_ORIG_O = []
 PERMUTATIONS_NODESTRENGTH_ORIG_C = []
 PERMUTATIONS_NODESTRENGTH_TLRC_C = []
+PERMUTATIONS_NODESTRENGTH_TLRC = []
 PERMUTATIONS_L2NORM_ORIG_O = []
 PERMUTATIONS_L2NORM_ORIG_C = []
 PERMUTATIONS_L2NORM_TLRC_C = []
@@ -263,10 +287,12 @@ PERMUTATIONS_SELECTIONCOUNT_TLRC_C = []
 PERMUTATIONS_STABILITY_ORIG_O = []
 PERMUTATIONS_STABILITY_ORIG_C = []
 PERMUTATIONS_STABILITY_TLRC_C = []
+PERMUTATIONS_STABILITY_TLRC = []
 SUBJECT_INDEX.each do |s|
   PERMUTATIONS_NODESTRENGTH_ORIG_O.push(AFNI_NODESTRENGTH_ORIG_O.select {|f| f.include? "_#{s}"})
   PERMUTATIONS_NODESTRENGTH_ORIG_C.push(AFNI_NODESTRENGTH_ORIG_C.select {|f| f.include? "_#{s}"})
   PERMUTATIONS_NODESTRENGTH_TLRC_C.push(AFNI_NODESTRENGTH_TLRC_C.select {|f| f.include? "_#{s}"})
+  PERMUTATIONS_NODESTRENGTH_TLRC.push(AFNI_NODESTRENGTH_TLRC.select {|f| f.include? "_#{s}"})
   PERMUTATIONS_L2NORM_ORIG_O.push(AFNI_L2NORM_ORIG_O.select {|f| f.include? "_#{s}"})
   PERMUTATIONS_L2NORM_ORIG_C.push(AFNI_L2NORM_ORIG_C.select {|f| f.include? "_#{s}"})
   PERMUTATIONS_L2NORM_TLRC_C.push(AFNI_L2NORM_TLRC_C.select {|f| f.include? "_#{s}"})
@@ -276,8 +302,12 @@ SUBJECT_INDEX.each do |s|
   PERMUTATIONS_STABILITY_ORIG_O.push(AFNI_STABILITY_ORIG_O.select {|f| f.include? "_#{s}"})
   PERMUTATIONS_STABILITY_ORIG_C.push(AFNI_STABILITY_ORIG_C.select {|f| f.include? "_#{s}"})
   PERMUTATIONS_STABILITY_TLRC_C.push(AFNI_STABILITY_TLRC_C.select {|f| f.include? "_#{s}"})
+  PERMUTATIONS_STABILITY_TLRC.push(AFNI_STABILITY_TLRC.select {|f| f.include? "_#{s}"})
 end
 
+SUBJECTS_NODESTRENGTH_TLRC_TXT = []
+SUBJECTS_NODESTRENGTH_TLRC_RAW = []
+SUBJECTS_NODESTRENGTH_TLRC = []
 SUBJECTS_NODESTRENGTH_ORIG_O_TXT = []
 SUBJECTS_NODESTRENGTH_ORIG_O_RAW = []
 SUBJECTS_NODESTRENGTH_ORIG_O = []
@@ -292,11 +322,16 @@ SUBJECTS_SELECTIONCOUNT_ORIG_O_TXT = []
 SUBJECTS_SELECTIONCOUNT_ORIG_O = []
 SUBJECTS_SELECTIONCOUNT_ORIG_C = []
 SUBJECTS_SELECTIONCOUNT_TLRC_C = []
+SUBJECTS_STABILITY_TLRC_TXT = []
+SUBJECTS_STABILITY_TLRC = []
 SUBJECTS_STABILITY_ORIG_O_TXT = []
 SUBJECTS_STABILITY_ORIG_O = []
 SUBJECTS_STABILITY_ORIG_C = []
 SUBJECTS_STABILITY_TLRC_C = []
 PERMUTATION_INDEX.each do |p|
+  SUBJECTS_NODESTRENGTH_TLRC_TXT.push(TXT_NODESTRENGTH_TLRC.select {|f| f.include? "#{p}_"})
+  SUBJECTS_NODESTRENGTH_TLRC_RAW.push(AFNI_NODESTRENGTH_TLRC_RAW.select {|f| f.include? "#{p}_"})
+  SUBJECTS_NODESTRENGTH_TLRC.push(AFNI_NODESTRENGTH_TLRC.select {|f| f.include? "#{p}_"})
   SUBJECTS_NODESTRENGTH_ORIG_O_TXT.push(TXT_NODESTRENGTH_ORIG_O.select {|f| f.include? "#{p}_"})
   SUBJECTS_NODESTRENGTH_ORIG_O_RAW.push(AFNI_NODESTRENGTH_ORIG_O_RAW.select {|f| f.include? "#{p}_"})
   SUBJECTS_NODESTRENGTH_ORIG_O.push(AFNI_NODESTRENGTH_ORIG_O.select {|f| f.include? "#{p}_"})
@@ -311,12 +346,13 @@ PERMUTATION_INDEX.each do |p|
   SUBJECTS_SELECTIONCOUNT_ORIG_O.push(AFNI_SELECTIONCOUNT_ORIG_O.select {|f| f.include? "#{p}_"})
   SUBJECTS_SELECTIONCOUNT_ORIG_C.push(AFNI_SELECTIONCOUNT_ORIG_C.select {|f| f.include? "#{p}_"})
   SUBJECTS_SELECTIONCOUNT_TLRC_C.push(AFNI_SELECTIONCOUNT_TLRC_C.select {|f| f.include? "#{p}_"})
+  SUBJECTS_STABILITY_TLRC_TXT.push(TXT_STABILITY_TLRC.select {|f| f.include? "#{p}_"})
+  SUBJECTS_STABILITY_TLRC.push(AFNI_STABILITY_TLRC.select {|f| f.include? "#{p}_"})
   SUBJECTS_STABILITY_ORIG_O_TXT.push(TXT_STABILITY_ORIG_O.select {|f| f.include? "#{p}_"})
   SUBJECTS_STABILITY_ORIG_O.push(AFNI_STABILITY_ORIG_O.select {|f| f.include? "#{p}_"})
   SUBJECTS_STABILITY_ORIG_C.push(AFNI_STABILITY_ORIG_C.select {|f| f.include? "#{p}_"})
   SUBJECTS_STABILITY_TLRC_C.push(AFNI_STABILITY_TLRC_C.select {|f| f.include? "#{p}_"})
 end
-
 # GROUP PERMUTATION FILES BY SUBJECT AND CROSSVALIDATION
 # ------------------------------------------------------
 PERMUTATIONS_NODESTRENGTH_ORIG_O_CV = AFNI_NODESTRENGTH_ORIG_O_CV.collect {|c| SUBJECT_INDEX.collect {|s|  c.grep(/[0-9]+_#{s}_[0-9]+/)}}
@@ -366,6 +402,23 @@ namespace :afni do
 end
 
 afni_orig_o_raw =
+  SUBJECTS_NODESTRENGTH_TLRC_RAW +
+  SUBJECTS_STABILITY_TLRC
+txt_orig_o =
+  SUBJECTS_NODESTRENGTH_TLRC_TXT +
+  SUBJECTS_STABILITY_TLRC_TXT
+afni_orig_o_raw.zip(txt_orig_o).each do |afni_list,txt_list|
+  afni_list.zip(txt_list).each do |target,source|
+    file target => [source,SHARED_ATLAS] do
+      afni_undump(target,source,SHARED_ATLAS,XYZ_ORIENT)
+    end
+    CLOBBER.push(target)
+    CLOBBER.push(target.sub(".HEAD",".BRIK"))
+    CLOBBER.push(target.sub(".HEAD",".BRIK.gz"))
+  end
+end
+
+afni_orig_o_raw =
   SUBJECTS_NODESTRENGTH_ORIG_O_RAW +
   SUBJECTS_L2NORM_ORIG_O_RAW +
   SUBJECTS_SELECTIONCOUNT_ORIG_O +
@@ -410,11 +463,13 @@ afni_orig_o_raw.zip(txt_orig_o).each do |afni_lol,txt_lol|
 end
 
 afni_orig_o_to_scale =
+  AFNI_NODESTRENGTH_TLRC_RAW +
   AFNI_NODESTRENGTH_ORIG_O_RAW +
   AFNI_L2NORM_ORIG_O_RAW +
   AFNI_NODESTRENGTH_ORIG_O_RAW_CV.flatten +
   AFNI_L2NORM_ORIG_O_RAW_CV.flatten
 afni_orig_o_scaled =
+  AFNI_NODESTRENGTH_TLRC+
   AFNI_NODESTRENGTH_ORIG_O+
   AFNI_L2NORM_ORIG_O +
   AFNI_NODESTRENGTH_ORIG_O_CV.flatten +
@@ -500,6 +555,7 @@ afni_tlrc_c_lolol.zip(afni_orig_c_lolol).each do |tlrc_lol,orig_lol|
 end
 
 afni_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC,
   PERMUTATIONS_NODESTRENGTH_ORIG_O,
   PERMUTATIONS_NODESTRENGTH_ORIG_C,
   PERMUTATIONS_NODESTRENGTH_TLRC_C,
@@ -509,11 +565,13 @@ afni_lolol = [
   PERMUTATIONS_SELECTIONCOUNT_ORIG_O,
   PERMUTATIONS_SELECTIONCOUNT_ORIG_C,
   PERMUTATIONS_SELECTIONCOUNT_TLRC_C,
+  PERMUTATIONS_STABILITY_TLRC,
   PERMUTATIONS_STABILITY_ORIG_O,
   PERMUTATIONS_STABILITY_ORIG_C,
   PERMUTATIONS_STABILITY_TLRC_C
 ]
 subjmean_lol = [
+  SUBJMEAN_NODESTRENGTH_TLRC,
   SUBJMEAN_NODESTRENGTH_ORIG_O,
   SUBJMEAN_NODESTRENGTH_ORIG_C,
   SUBJMEAN_NODESTRENGTH_TLRC_C,
@@ -523,6 +581,7 @@ subjmean_lol = [
   SUBJMEAN_SELECTIONCOUNT_ORIG_O,
   SUBJMEAN_SELECTIONCOUNT_ORIG_C,
   SUBJMEAN_SELECTIONCOUNT_TLRC_C,
+  SUBJMEAN_STABILITY_TLRC,
   SUBJMEAN_STABILITY_ORIG_O,
   SUBJMEAN_STABILITY_ORIG_C,
   SUBJMEAN_STABILITY_TLRC_C
@@ -582,12 +641,14 @@ subjmean_lolol_cv.zip(afni_lololol_cv).each do |target_lol,source_lolol|
 end
 
 subjmean_lol = [
+  SUBJMEAN_NODESTRENGTH_TLRC,
   SUBJMEAN_NODESTRENGTH_TLRC_C,
   SUBJMEAN_L2NORM_TLRC_C,
   SUBJMEAN_SELECTIONCOUNT_TLRC_C,
   SUBJMEAN_STABILITY_TLRC_C
 ]
 group_all = [
+  GROUPMEAN_NODESTRENGTH_TLRC,
   GROUPMEAN_NODESTRENGTH_TLRC_C,
   GROUPMEAN_L2NORM_TLRC_C,
   GROUPMEAN_SELECTIONCOUNT_TLRC_C,
@@ -630,21 +691,27 @@ end
 # Average models, no blur
 # -----------------------
 afni_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC,
   PERMUTATIONS_NODESTRENGTH_ORIG_O,
   PERMUTATIONS_L2NORM_ORIG_O,
   PERMUTATIONS_SELECTIONCOUNT_ORIG_O,
+  PERMUTATIONS_STABILITY_TLRC,
   PERMUTATIONS_STABILITY_ORIG_O,
 ]
 subjsd_lol = [
+  SUBJSD_NODESTRENGTH_TLRC,
   SUBJSD_NODESTRENGTH_ORIG_O,
   SUBJSD_L2NORM_ORIG_O,
   SUBJSD_SELECTIONCOUNT_ORIG_O,
+  SUBJSD_STABILITY_TLRC,
   SUBJSD_STABILITY_ORIG_O
 ]
 subjmean_lol = [
+  SUBJMEAN_NODESTRENGTH_TLRC,
   SUBJMEAN_NODESTRENGTH_ORIG_O,
   SUBJMEAN_L2NORM_ORIG_O,
   SUBJMEAN_SELECTIONCOUNT_ORIG_O,
+  SUBJMEAN_STABILITY_TLRC,
   SUBJMEAN_STABILITY_ORIG_O
 ]
 subjsd_lol.zip(subjmean_lol,afni_lolol).each do |target_list,mean_list,source_lol|
@@ -661,18 +728,21 @@ end
 # Average models, blur
 # --------------------
 afni_lolol = [
+  PERMUTATIONS_NODESTRENGTH_TLRC,
   PERMUTATIONS_NODESTRENGTH_TLRC_C,
   PERMUTATIONS_L2NORM_TLRC_C,
   PERMUTATIONS_SELECTIONCOUNT_TLRC_C,
   PERMUTATIONS_STABILITY_TLRC_C,
 ]
 subjsd_lol = [
+  SUBJSD_NODESTRENGTH_TLRC_BLUR,
   SUBJSD_NODESTRENGTH_TLRC_C_BLUR,
   SUBJSD_L2NORM_TLRC_C_BLUR,
   SUBJSD_SELECTIONCOUNT_TLRC_C_BLUR,
   SUBJSD_STABILITY_TLRC_C_BLUR
 ]
 subjmean_lol = [
+  SUBJMEAN_NODESTRENGTH_TLRC_BLUR,
   SUBJMEAN_NODESTRENGTH_TLRC_C_BLUR,
   SUBJMEAN_L2NORM_TLRC_C_BLUR,
   SUBJMEAN_SELECTIONCOUNT_TLRC_C_BLUR,
