@@ -21,6 +21,7 @@ function [] = wbrsa_dumpcoords( resultfilelist, metric, coordtype, varargin)
   if ~any(strcmpi(coordtype,{'orig','mni','tlrc'}))
     error('Unrecognized coordtype "%s". Exiting...', metric);
   end
+
   resultfiles = import_resultlist(resultfilelist);
   if ~iscell(resultfiles)
     if ischar(resultfiles)
@@ -54,6 +55,7 @@ function [] = wbrsa_dumpcoords( resultfilelist, metric, coordtype, varargin)
     else
       fmt = strjoin(fmt_c(2:3),'_');
     end
+    dump_all(resultfiles, metadatafile, metric, coordtype, fmt, PERM);
   else
     fmt_c = cell(1,numel(by));
     PERM = strcmpi('RandomSeed',by);
@@ -63,10 +65,6 @@ function [] = wbrsa_dumpcoords( resultfilelist, metric, coordtype, varargin)
       fmt_c{i} = sprintf('%%0%dd',digits);
     end
     fmt = strcat(strjoin(fmt_c,'_'),'.%s');
-  end
-  if isempty(by)
-    dump_all(resultfiles, metadatafile, metric, coordtype, fmt, PERM);
-  else
     dump_avg(resultfiles, metadatafile, metric, coordtype, fmt, by);
   end
 end
@@ -215,13 +213,17 @@ function [] = dump_avg(resultfiles, metadatafile, metric, coordtype, fmt, by)
         V(ii,ix) = rblock(ii).v;
         xyz(ix,:) = rblock(ii).xyz; % this may do lots of overwriting.
       end
-      switch lower(metric)
-        case 'nodestrength'
-          v = mean(V);
-        case 'stability'
-          v = sum(V);
-        otherwise
-          error('Unrecognized metric "%s". Exiting...', metric);
+      if all(size(V) > 1)
+        switch lower(metric)
+          case 'nodestrength'
+            v = mean(V);
+          case 'stability'
+            v = sum(V);
+          otherwise
+            error('Unrecognized metric "%s". Exiting...', metric);
+        end
+      else
+        v = V;
       end
       id = cell(1,numel(by));
       for ii = 1:numel(by)
@@ -244,16 +246,21 @@ function [] = dump_avg(resultfiles, metadatafile, metric, coordtype, fmt, by)
   end
 end
 function cfilter = get_colfilter(meta,cfset)
-  if size(cfset,2) > 1
-    zc = cell(size(cflist,2),1);
-    for ii = 1:size(cflist,2)
-      z = strcmpi({meta.filters.label}, cfset{ii});
-      zc{ii} = reshape(meta.filters(z).filter,1,[]);
+  if any(strcmp('filters', fieldnames(meta)))
+    ff = 'filters';
+  else
+    ff = 'filter';
+  end
+  if numel(cfset,2) > 1
+    zc = cell(numel(cfset,2),1);
+    for ii = 1:numel(cfset,2)
+      z = strcmpi({meta.(ff).label}, cfset{ii});
+      zc{ii} = reshape(meta.(ff)(z).filter,1,[]);
     end
     cfilter = all(cell2mat(zc));
   else
-    z = strcmpi({meta.filters.label}, cfset{1});
-    cfilter = meta.filters(z).filter;
+    z = strcmpi({meta.(ff).label}, cfset{1});
+    cfilter = meta.(ff)(z).filter;
   end
 end
 function Uix = get_Uix(r)

@@ -3,9 +3,11 @@ require 'tempfile'
 require 'json'
 require 'scanf'
 
-METADATA = ENV.fetch('METADATA') {"#{ENV['HOME']}/MRI/Manchester/data/avg/metadata_avg_new.mat"}
+METADATA = ENV.fetch('METADATA') {"D:/MRI/SoundPicture/data/MAT/avg/bystudy/metadata_avg.mat"}#{"#{ENV['HOME']}/MRI/Manchester/data/avg/metadata_avg_new.mat"}
 RESULTFILES = Rake::FileList["*/results.mat"]
 PARAMFILES = RESULTFILES.pathmap("%d/params.json")
+RESULTKEY = '.results.key'
+PARAMKEY = '.params.key'
 COLFILTERKEY = '.colfilter.key'
 SUBJKEY = '.subject.key'
 SEEDKEY = '.RandomSeed.key'
@@ -13,9 +15,9 @@ CVKEY = '.cvholdout.key'
 
 LINENO = ENV['DBLINENO'].to_i || nil
 FUNC = ENV['FUNC'] || "wbrsa_dumpcoords"
-def run_matlab(func,args,resultfiles,debug: nil)
-  rlist = Tempfile.new('rlist')
+def run_matlab(func,args,debug: nil)
   matlab="matlab -nojvm -r"
+  debug = 'error'
   if debug.eql?('error') then
     debugcmd = "dbstop if error"
   elsif debug.is_a? Numeric
@@ -25,18 +27,22 @@ def run_matlab(func,args,resultfiles,debug: nil)
   else
     debugcmd = nil
   end
-  args = [%{'#{rlist.path}'},args].join(',')
-  path = "#{ENV['HOME']}/src/Manchester_SoundPicture/rake"
+  args = [%{'#{RESULTKEY}'},args].join(',')
+  path = "C:/Users/mbmhscc4/GitHub/Manchester_SoundPicture/rake" # "#{ENV['HOME']}/src/Manchester_SoundPicture/rake"
   addpath = %{addpath('#{path}')}
-  begin
-    File.open(rlist, 'w') {|f| f.write resultfiles.join("\n")}
+  if debugcmd.nil? || debugcmd == 0 then
+    sh(%{#{matlab} "#{addpath};#{func}(#{args});exit;"})
+  else
     sh(%{#{matlab} "#{addpath};#{debugcmd};#{func}(#{args});exit;"})
-  ensure
-    rlist.close
-    rlist.unlink
   end
 end
 
+file RESULTKEY => RESULTFILES do
+  File.open(RESULTKEY, 'w') {|f| f.write(RESULTFILES.join("\n"))}
+end
+file PARAMKEY => RESULTFILES do
+  File.open(PARAMKEY, 'w') {|f| f.write(PARAMFILES.join("\n"))}
+end
 file COLFILTERKEY => PARAMFILES do
   target = COLFILTERKEY
   source_list = PARAMFILES
@@ -113,58 +119,58 @@ end
 
 namespace :dump do
   namespace :nodestrength do
-    task :cv=> [SUBJKEY,CVKEY] do
+    task :cv=> [RESULTKEY,SUBJKEY,CVKEY] do
       pargs=%W{'nodestrength' 'orig'}
       kwargs=%W{
         'metadatafile' '#{METADATA}'
       }
       args=(pargs+kwargs).join(',')
-      run_matlab(FUNC,args,RESULTFILES,debug: LINENO)
+      run_matlab(FUNC,args,debug: LINENO)
     end
 
     namespace :avg do
-      task :final=> [SUBJKEY,CVKEY,COLFILTERKEY] do
+      task :final=> [RESULTKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
         pargs=%W{'nodestrength' 'orig'}
         kwargs=%W{
           'metadatafile' '#{METADATA}'
           'by' {'subject'}
         }
         args=(pargs+kwargs).join(',')
-        run_matlab(FUNC,args,RESULTFILES,debug: LINENO)
+        run_matlab(FUNC,args,debug: LINENO)
       end
 
-      task :permtest=> [SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
+      task :permtest=> [RESULTKEY,SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
         pargs=%W{'nodestrength' 'orig'}
         kwargs=%W{
           'metadatafile' '#{METADATA}'
           'by' {'RandomSeed','subject'}
         }
         args=(pargs+kwargs).join(',')
-        run_matlab(FUNC,args,RESULTFILES,debug: LINENO)
+        run_matlab(FUNC,args,debug: LINENO)
       end
 
     end
   end
   namespace :stability do
     namespace :avg do
-      task :final=> [SUBJKEY,CVKEY,COLFILTERKEY] do
+      task :final=> [RESULTKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
         pargs=%W{'stability' 'orig'}
         kwargs=%W{
           'metadatafile' '#{METADATA}'
           'by' {'subject'}
         }
         args=(pargs+kwargs).join(',')
-        run_matlab(FUNC,args,RESULTFILES,debug: LINENO)
+        run_matlab(FUNC,args,debug: LINENO)
       end
 
-      task :permtest=> [SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
+      task :permtest=> [RESULTKEY,SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
         pargs=%W{'stability' 'orig'}
         kwargs=%W{
           'metadatafile' '#{METADATA}'
           'by' {'RandomSeed','subject'}
         }
         args=(pargs+kwargs).join(',')
-        run_matlab(FUNC,args,RESULTFILES,debug: LINENO)
+        run_matlab(FUNC,args,debug: LINENO)
       end
 
     end
