@@ -117,6 +117,7 @@ file SEEDKEY => PARAMFILES do
   end
 end
 
+task :keys => [RESULTKEY,SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY]
 namespace :dump do
   namespace :nodestrength do
     task :cv=> [RESULTKEY,SUBJKEY,CVKEY] do
@@ -139,7 +140,7 @@ namespace :dump do
         run_matlab(FUNC,args,debug: LINENO)
       end
 
-      task :permtest=> [RESULTKEY,SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
+      task :permutations=> [RESULTKEY,SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
         pargs=%W{'nodestrength' 'orig'}
         kwargs=%W{
           'metadatafile' '#{METADATA}'
@@ -148,7 +149,6 @@ namespace :dump do
         args=(pargs+kwargs).join(',')
         run_matlab(FUNC,args,debug: LINENO)
       end
-
     end
   end
   namespace :stability do
@@ -163,7 +163,7 @@ namespace :dump do
         run_matlab(FUNC,args,debug: LINENO)
       end
 
-      task :permtest=> [RESULTKEY,SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
+      task :permutations => [RESULTKEY,SEEDKEY,SUBJKEY,CVKEY,COLFILTERKEY] do
         pargs=%W{'stability' 'orig'}
         kwargs=%W{
           'metadatafile' '#{METADATA}'
